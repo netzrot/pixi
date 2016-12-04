@@ -18,17 +18,17 @@ var port = process.env.PORT || 3000;
 var db = [];
 
 app.get('/', function(req, res){
-	res.render('index', {});
+	res.render('index', {db: db});
 });
 
 app.post('/image-upload', upload.single('file-to-upload'), function(req, res, next){
 	var newImage = {
-		originalname: req.file.originalname,
-		path: req.file.path,
+		//originalname: req.file.originalname,
+		//path: req.file.path,
 		caption: req.body.caption
 	};
 	db.push(newImage);
-	console.log(db);
+	res.json(db);
 });
 
 app.listen(port, function(){
