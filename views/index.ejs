@@ -25,7 +25,7 @@ Instagram Clone!
           contentType: false,
           processData: false
       }).done(function(data){
-          console.log(data);
+          $(".image-container").prepend("<img src='" + data.path + "' />");
       }).fail(function(data){
             console.log('Error');
         });

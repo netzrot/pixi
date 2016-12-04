@@ -32,7 +32,7 @@ app.post('/image-upload', upload.single('file-to-upload'), function(req, res, ne
 		caption: req.body.caption
 	};
 	db.push(newImage);
-	res.json(db);
+	res.json(newImage);
 });
 
 app.listen(port, function(){
