@@ -13,6 +13,8 @@ var sequelize = new Sequelize(databaseURL);
 var multer = require('multer');
 var upload = multer({ dest: 'uploads/' });
 
+var fs = require('fs');
+
 var port = process.env.PORT || 3000;
 
 var db = [];
@@ -22,13 +24,19 @@ app.get('/', function(req, res){
 });
 
 app.post('/image-upload', upload.single('file-to-upload'), function(req, res, next){
-	var newImage = {
-		//originalname: req.file.originalname,
-		//path: req.file.path,
-		caption: req.body.caption
-	};
-	db.push(newImage);
-	res.json(db);
+
+	var uploadedFile = req.file.path;
+	var newLocation = `${req.file.destination}${req.file.originalname}`;
+	fs.rename(uploadedFile, newLocation, function(){
+		var newImage = {
+			originalname: req.file.originalname,
+			path: newLocation,
+			caption: req.body.caption
+		};
+		db.push(newImage);
+		res.redirect("/");
+		//res.json(db);
+	});
 });
 
 app.listen(port, function(){
