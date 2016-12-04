@@ -12,8 +12,15 @@ var sequelize = new Sequelize(databaseURL);
 
 var port = process.env.PORT || 3000;
 
+var db = [];
+
 app.get('/', function(req, res){
 	res.render('index', {});
+});
+
+app.post('/image-upload', function(req, res){
+	db.push(req.body);
+	console.log(db);
 });
 
 app.listen(port, function(){
