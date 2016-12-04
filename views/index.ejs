@@ -7,6 +7,7 @@ Instagram Clone!
 
 <div class="image-container">
 	<% for(var i in db){ %>
+		<img src="<%= db[i].path %>" />
 		<%= db[i].caption %>
 	<% }; %>
 </div>
