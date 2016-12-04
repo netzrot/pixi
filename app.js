@@ -10,6 +10,9 @@ var Sequelize = require("sequelize");
 var databaseURL = process.env.DATABASE_URL || "sqlite://instagram-clone.sqlite";
 var sequelize = new Sequelize(databaseURL);
 
+var multer = require('multer');
+var upload = multer({ dest: 'uploads/' });
+
 var port = process.env.PORT || 3000;
 
 var db = [];
@@ -18,8 +21,13 @@ app.get('/', function(req, res){
 	res.render('index', {});
 });
 
-app.post('/image-upload', function(req, res){
-	db.push(req.body);
+app.post('/image-upload', upload.single('file-to-upload'), function(req, res, next){
+	var newImage = {
+		originalname: req.file.originalname,
+		path: req.file.path,
+		caption: req.body.caption
+	};
+	db.push(newImage);
 	console.log(db);
 });
 
