@@ -5,19 +5,10 @@ Instagram Clone!
 	<input type="submit" value="Submit" />
 </form>
 
-
-<ul id="posts-container">
-	<% for(var i in db){ %>
-		<li class="post-container">
-			<div class="image-container">
-				<img src="<%= db[i].path %>" />
-			</div>
-			<div class="caption-container">
-				<%= db[i].caption %>
-			</div>
-		<div>
-	<% }; %>
-</div>
+<div class="content-container"></div>
 
 <script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
 <script src="/public/scripts/main.js"></script>
+<script>
+	$(".content-container").append(loadPosts());
+</script>

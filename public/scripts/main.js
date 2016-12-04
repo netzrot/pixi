@@ -24,9 +24,28 @@ $('#image-upload-form').submit(function(e){
       contentType: false,
       processData: false
   }).done(function(data){
+		if($(".no-clonestagrams")){
+			$(".no-clonestagrams").remove();
+		};
       $("#posts-container").prepend(buildPost(data));
   }).fail(function(data){
         console.log('Error');
     });
   e.preventDefault(); 
 });
+
+var loadPosts = function(){
+	var postsContainer = document.createElement('ul');
+	postsContainer.setAttribute('id', 'posts-container');
+	$.get("/get-all", function(response){
+		if(response.length === 0){
+			postsContainer.innerHTML = "<p class='no-clonestagrams'>No Clonestagrams yet!</p>";
+		}
+		else{
+			for(var i = (response.length - 1); i >= 0; i--){
+				postsContainer.innerHTML += buildPost(response[i]).outerHTML;
+			};
+		};
+	});
+	return postsContainer;
+};

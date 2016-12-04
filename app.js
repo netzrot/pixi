@@ -35,6 +35,17 @@ app.post('/image-upload', upload.single('file-to-upload'), function(req, res, ne
 	res.json(newImage);
 });
 
+app.get('/get-all', function(req, res){
+	var posts = [];
+	for(var i = 0; i < db.length; i++){
+		var post = db[i];
+		post.path = db[i].path;
+		post.caption = db[i].caption;
+		posts.push(post);
+	};
+	res.json(posts);
+});
+
 app.listen(port, function(){
 	console.log(`ExpressJS started on port ${port}`);
 });
