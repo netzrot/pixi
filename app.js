@@ -26,19 +26,13 @@ app.get('/', function(req, res){
 });
 
 app.post('/image-upload', upload.single('file-to-upload'), function(req, res, next){
-
-	var uploadedFile = req.file.path;
-	var newLocation = `${req.file.destination}${req.file.originalname}`;
-	fs.rename(uploadedFile, newLocation, function(){
-		var newImage = {
-			originalname: req.file.originalname,
-			path: newLocation,
-			caption: req.body.caption
-		};
-		db.push(newImage);
-		res.redirect("/");
-		//res.json(db);
-	});
+	var newImage = {
+		originalname: req.file.originalname,
+		path: req.file.path,
+		caption: req.body.caption
+	};
+	db.push(newImage);
+	res.json(db);
 });
 
 app.listen(port, function(){

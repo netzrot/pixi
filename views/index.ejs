@@ -1,9 +1,10 @@
 Instagram Clone!
-<form action="/image-upload" method="POST" id="image-upload-form" enctype="multipart/form-data">
+<form id="image-upload-form" enctype="multipart/form-data">
 	<input type="file" id="file-to-upload" name="file-to-upload" />
 	<input type="text" name="caption" />
 	<input type="submit" value="Submit" />
 </form>
+
 
 <div class="image-container">
 	<% for(var i in db){ %>
@@ -15,4 +16,20 @@ Instagram Clone!
 <script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
 <script>
 
+   $('#image-upload-form').submit(function(e){
+      var formData = new FormData($(this)[0]);
+      $.ajax({
+          type:'POST',
+          url:'/image-upload',
+          data : formData,                  
+          contentType: false,
+          processData: false
+      }).done(function(data){
+          console.log(data);
+      }).fail(function(data){
+            console.log('Error');
+        });
+      e.preventDefault(); 
+    });
+ 
 </script>
