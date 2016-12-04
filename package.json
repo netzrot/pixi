@@ -1,0 +1,19 @@
+{
+  "name": "instagram-clone",
+  "version": "0.0.1",
+  "description": "instagram-clone app, developed for NYCDA",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/darrenklein/instagram-clone.git"
+  },
+  "author": "Darren Klein, Thorsten Schroeder, James Kim",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/darrenklein/instagram-clone/issues"
+  },
+  "homepage": "https://github.com/darrenklein/instagram-clone#readme"
+}
