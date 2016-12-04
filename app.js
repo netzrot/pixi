@@ -4,9 +4,7 @@ var bodyParser = require('body-parser');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 app.set('view engine', 'ejs');
-//app.use(express.static('public'));
 app.use('/public', express.static(__dirname + "/public"));
-
 
 var Sequelize = require("sequelize");
 var databaseURL = process.env.DATABASE_URL || "sqlite://instagram-clone.sqlite";
@@ -14,8 +12,6 @@ var sequelize = new Sequelize(databaseURL);
 
 var multer = require('multer');
 var upload = multer({ dest: 'public/uploads/' });
-
-var fs = require('fs');
 
 var port = process.env.PORT || 3000;
 
