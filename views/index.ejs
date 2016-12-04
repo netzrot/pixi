@@ -6,15 +6,45 @@ Instagram Clone!
 </form>
 
 
-<div class="image-container">
+<ul id="posts-container">
 	<% for(var i in db){ %>
-		<img src="<%= db[i].path %>" />
-		<%= db[i].caption %>
+		<li class="post-container">
+			<div class="image-container">
+				<img src="<%= db[i].path %>" />
+			</div>
+			<div class="caption-container">
+				<%= db[i].caption %>
+			</div>
+		<div>
 	<% }; %>
 </div>
 
 <script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
 <script>
+
+	var buildPost = function(data){
+		var post = document.createElement('li');
+		var imageContainer = document.createElement('div');
+		var captionContainer = document.createElement('div');
+		var imageElement = document.createElement('img');
+
+		var caption = data.caption;
+		var imagePath = data.path;
+
+		post.setAttribute('class', 'post-container');
+		imageContainer.setAttribute('class', 'image-container');
+		captionContainer.setAttribute('class', 'caption-container');
+		imageElement.setAttribute('src', data.path);
+
+		imageContainer.innerHTML = imageElement.outerHTML;
+		captionContainer.innerHTML = data.caption;
+
+		post.innerHTML = imageContainer.outerHTML + captionContainer.outerHTML;
+
+		return post;
+	};
+
+
 
    $('#image-upload-form').submit(function(e){
       var formData = new FormData($(this)[0]);
@@ -25,7 +55,8 @@ Instagram Clone!
           contentType: false,
           processData: false
       }).done(function(data){
-          $(".image-container").prepend("<img src='" + data.path + "' />");
+          //$("#posts-container").prepend("<img src='" + data.path + "' />" + data.caption);
+          $("#posts-container").prepend(buildPost(data));
       }).fail(function(data){
             console.log('Error');
         });
