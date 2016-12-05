@@ -16,22 +16,32 @@ var buildPost = function(data){
 };
 
 $('#image-upload-form').submit(function(e){
-  var formData = new FormData($(this)[0]);
-  $.ajax({
-      type:'POST',
-      url:'/image-upload',
-      data : formData,                  
-      contentType: false,
-      processData: false
-  }).done(function(data){
-		if($(".no-clonestagrams")){
-			$(".no-clonestagrams").remove();
-		};
-      $("#posts-container").prepend(buildPost(data));
-  }).fail(function(data){
-        console.log('Error');
-    });
-  e.preventDefault(); 
+	var inputFields = $(".input-field");
+	var imageField = $("#file-to-upload");
+	var formData = new FormData($(this)[0]);
+	var proceed = true;
+	if($(imageField).val() == ""){
+		var proceed = false;
+		alert("No photo!");
+	};
+	if(proceed){
+	  	$.ajax({
+	      	type:'POST',
+	      	url:'/image-upload',
+	      	data : formData,                  
+	      	contentType: false,
+	      	processData: false
+	  	}).done(function(data){
+			if($(".no-clonestagrams")){
+				$(".no-clonestagrams").remove();
+			};
+		    $("#posts-container").prepend(buildPost(data));
+		    $(inputFields).val("");
+		}).fail(function(data){
+		    console.log('Error');
+		});
+	};
+	e.preventDefault(); 
 });
 
 var loadPosts = function(){
