@@ -18,11 +18,16 @@ var buildPost = function(data){
 $('#image-upload-form').submit(function(e){
 	var inputFields = $(".input-field");
 	var imageField = $("#file-to-upload");
+	var captionField = $("#caption");
 	var formData = new FormData($(this)[0]);
 	var proceed = true;
 	if($(imageField).val() == ""){
 		var proceed = false;
 		alert("No photo!");
+	};
+	if(captionField[0].value.length > 150){
+		var proceed = false;
+		alert("Caption is too long!");
 	};
 	if(proceed){
 	  	$.ajax({
@@ -38,7 +43,7 @@ $('#image-upload-form').submit(function(e){
 		    $("#posts-container").prepend(buildPost(data));
 		    $(inputFields).val("");
 		}).fail(function(data){
-		    console.log('Error');
+		    alert('Upload failed. Sorry! There seems to have been an error, please try again.');
 		});
 	};
 	e.preventDefault(); 

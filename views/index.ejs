@@ -1,7 +1,10 @@
 Instagram Clone!
 <form id="image-upload-form" enctype="multipart/form-data">
 	<input type="file" class="input-field" id="file-to-upload" name="file-to-upload" />
-	<input type="text" class="input-field" name="caption" />
+	<label for="caption">Caption</label>
+	<textarea class="input-field" id="caption" name="caption" maxlength="150"></textarea>
+	<label for="tags">Tag people</label>
+	<input type="text" class="input-field" id="tags" name="tags" />
 	<input type="submit" value="Submit" />
 </form>
 
