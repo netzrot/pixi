@@ -3,6 +3,10 @@ img {
 	height: auto;	
 }
 
+ul {
+	list-style: none;	
+}
+
 #input-text {
 	border-radius: 25px;
 	font-family: Cabin;
