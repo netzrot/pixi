@@ -1,4 +1,17 @@
-Instagram Clone!
+<!DOCTYPE html>
+<html>
+<head>
+<title>Pixi</title>
+<link type="text/css" rel="stylesheet" href="/public/stylesheets/main.css"/>
+<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Homemade+Apple" />
+<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Cabin" />
+<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Droid+Sans" />
+</head>
+<body>
+
+<div id="header">
+<h1>Pixi</h1>
+
 <form id="image-upload-form" enctype="multipart/form-data">
 	<input type="file" class="input-field" id="file-to-upload" name="file-to-upload" />
 	<label for="caption">Caption</label>
@@ -7,11 +20,17 @@ Instagram Clone!
 	<input type="text" class="input-field" id="tags" name="tags" />
 	<input type="submit" value="Submit" />
 </form>
+</div>
 
+<div id="body">
 <div class="content-container"></div>
 
 <script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
 <script src="/public/scripts/main.js"></script>
+
 <script>
 	$(".content-container").append(loadPosts());
 </script>
+</div>
+</body>
+</html>
