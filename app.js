@@ -25,9 +25,33 @@ var Image = sequelize.define("images", {
 		type: Sequelize.STRING,
 		allowNull: false
 	}
+}, {
+	classMethods: {
+		associate: function() {
+ 			Image.hasOne(Caption, { foreignKey: "image_id" })
+ 		}
+	}
+});
+
+var Caption = sequelize.define("captions", {
+	body: {
+		type: Sequelize.STRING
+	}
+}, {
+	classMethods: {
+		associate: function() {
+			Caption.belongsTo(Image, {
+				onDelete: "CASCADE",
+				foreignKey: {
+					allowNull: false
+				}
+			});
+		}
+	}
 });
 
 Image.sync();
+Caption.sync();
 
 app.get('/', function(req, res){
 	res.render('index', {});
