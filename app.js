@@ -39,18 +39,19 @@ app.post('/image-upload', upload.single('file-to-upload'), function(req, res, ne
 		var imageId = this.dataValues.id;
 		caption.imageId = imageId;
 		models.captions.create(caption).then(function(){
-			res.json([newImage, caption])
+			res.json({	'image': newImage,
+						'caption': caption  })
 		})
 	})
 });
 
 app.get('/get-all', function(req, res){
-	Image.findAll().then(function(rows) {
-		var pixis = [];
-		for (var i = 0; i < rows.length; i++) {
-			pixis.push(rows[i]);
-		}
-		res.json(pixis);
-	});
+	// Image.findAll().then(function(rows) {
+	// 	var pixis = [];
+	// 	for (var i = 0; i < rows.length; i++) {
+	// 		pixis.push(rows[i]);
+	// 	}
+	// 	res.json(pixis);
+	// });
 
 });
