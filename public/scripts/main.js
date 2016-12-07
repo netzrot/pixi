@@ -37,8 +37,8 @@ $('#image-upload-form').submit(function(e){
 	      	contentType: false,
 	      	processData: false
 	  	}).done(function(data){
-			if($(".no-clonestagrams")){
-				$(".no-clonestagrams").remove();
+			if($(".no-pixis")){
+				$(".no-pixis").remove();
 			};
 		    $("#posts-container").prepend(buildPost(data));
 		    $(inputFields).val("");
@@ -54,7 +54,7 @@ var loadPosts = function(){
 	postsContainer.setAttribute('id', 'posts-container');
 	$.get("/get-all", function(response){
 		if(response.length === 0){
-			postsContainer.innerHTML = "<p class='no-clonestagrams'>No Clonestagrams yet!</p>";
+			postsContainer.innerHTML = "<p class='no-pixis'>Post your first Pixi!</p>";
 		}
 		else{
 			for(var i = (response.length - 1); i >= 0; i--){
