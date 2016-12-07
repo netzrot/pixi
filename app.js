@@ -6,52 +6,20 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.set('view engine', 'ejs');
 app.use('/public', express.static(__dirname + "/public"));
 
-var Sequelize = require("sequelize");
-var databaseURL = process.env.DATABASE_URL || "sqlite://pixis.sqlite";
-var sequelize = new Sequelize(databaseURL);
+var models = require('./models');
 
 var multer = require('multer');
 var upload = multer({ dest: 'public/uploads/' });
 
 var port = process.env.PORT || 3000;
 
-var Image = sequelize.define("images", {
-	image_url: {
-		type: Sequelize.STRING,
-		allowNull: false,
-		unique: true
-	},
-	original_name: {
-		type: Sequelize.STRING,
-		allowNull: false
-	}
-}, {
-	classMethods: {
-		associate: function() {
- 			Image.hasOne(Caption, { foreignKey: "image_id" })
- 		}
-	}
+models.sequelize.sync().then(function(){
+	app.listen(port, function(){
+		console.log(`ExpressJS started on port ${port}`);
+	});
+}).catch(function(err){
+	console.error(err);
 });
-
-var Caption = sequelize.define("captions", {
-	body: {
-		type: Sequelize.STRING
-	}
-}, {
-	classMethods: {
-		associate: function() {
-			Caption.belongsTo(Image, {
-				onDelete: "CASCADE",
-				foreignKey: {
-					allowNull: false
-				}
-			});
-		}
-	}
-});
-
-Image.sync();
-Caption.sync();
 
 app.get('/', function(req, res){
 	res.render('index', {});
@@ -61,12 +29,18 @@ app.post('/image-upload', upload.single('file-to-upload'), function(req, res, ne
 	var newImage = {
 		'original_name': req.file.originalname,
 		'image_url': req.file.path
-		// ,
-		// caption: req.body.caption
 	};
 
-	Image.create(newImage).then(function() {
-		res.json(newImage);
+	var caption = {
+		'body': req.body.caption
+	};
+
+	models.images.create(newImage).then(function(){
+		var imageId = this.dataValues.id;
+		caption.imageId = imageId;
+		models.captions.create(caption).then(function(){
+			res.json([newImage, caption])
+		})
 	})
 });
 
@@ -79,9 +53,4 @@ app.get('/get-all', function(req, res){
 		res.json(pixis);
 	});
 
-});
-
-
-app.listen(port, function(){
-	console.log(`ExpressJS started on port ${port}`);
 });

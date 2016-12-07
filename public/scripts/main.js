@@ -37,11 +37,12 @@ $('#image-upload-form').submit(function(e){
 	      	contentType: false,
 	      	processData: false
 	  	}).done(function(data){
-			if($(".no-pixis")){
-				$(".no-pixis").remove();
-			};
-		    $("#posts-container").prepend(buildPost(data));
-		    $(inputFields).val("");
+	  		console.log(data)
+			// if($(".no-pixis")){
+			// 	$(".no-pixis").remove();
+			// };
+		 //    $("#posts-container").prepend(buildPost(data));
+		 //    $(inputFields).val("");
 		}).fail(function(data){
 		    alert('Upload failed. Sorry! There seems to have been an error, please try again.');
 		});
