@@ -15,6 +15,7 @@ ul {
 	font-variant: normal;
 	font-weight: 400;
 	line-height: 20px;	
+	padding-left: 15px;
 }
 
 #caption-field {
@@ -67,7 +68,7 @@ body {
 
 h1 {
 	font-family: "Homemade Apple";
-	font-size: 30px;
+	font-size: 40px;
 	font-style: normal;
 	font-variant: normal;
 	font-weight: 500;
@@ -88,4 +89,11 @@ h1 {
 	height: 15px;
 	padding-top: 15px;
 	padding-bottom: 15px;
+	padding-left: 10px;
+	font-family: "Droid Sans";
+	font-size: 14px;
+	font-style: normal;
+	font-variant: normal;
+	font-weight: 400;
+	line-height: 20px;
 }
