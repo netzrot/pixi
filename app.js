@@ -46,44 +46,20 @@ app.post('/image-upload', upload.single('file-to-upload'), function(req, res, ne
 });
 
 app.get('/get-all', function(req, res){
-	// models.images.findAll().then(function(rows) {
-	// 	var pixis = [];
-	// 	for (var i = 0; i < rows.length; i++) {
-	// 		var pixi = {};
-	// 		pixi.image = rows[i].dataValues;
-
-	// 		//var image_id = pixi.image.id;
-
-	// 		models.captions.findAll().then(function(){
-	// 			console.log(t)
-	// 		});
-
-			
-
-	// 		// pixi.caption = {
-	// 		// 	'body': caption
-	// 		// };
-
-	// 		pixis.push(pixi);
-	// 	}
-	// 	//console.log(pixis)
-	// 	res.json(pixis);
-	// });
-
-
-	models.images.findAll({
+	models.captions.findAll({
 	  include: [{
-	  	model: models.captions
+	  	model: models.images
 	  }]
 	}).then(function(rows){
 		var pixis = [];
 		for(var i = 0; i < rows.length; i++){
-			var pixi = rows[i];
-			console.log(pixi.dataValues)
-			// post.dataValues.username = post.dataValues.user.username;
-			// posts.push(post);
+		 	var pixi = {};
+		 	pixi.image = rows[i].dataValues.image;
+		 	pixi.caption = {
+		 		'body': rows[i].dataValues.body
+		 	}
+			pixis.push(pixi);
 		};
-		//res.json(posts);
+		res.json(pixis);
 	});
-
 });
