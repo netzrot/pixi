@@ -3,15 +3,15 @@ var buildPost = function(data){
 	var imageContainer = document.createElement('div');
 	var captionContainer = document.createElement('div');
 	var imageElement = document.createElement('img');
-	var caption = data.caption;
-	var imagePath = data.path;
+	// var caption = data.caption;
+	var imagePath = data.image_url;
 	post.setAttribute('class', 'post-container');
 	imageContainer.setAttribute('class', 'image-container');
 	captionContainer.setAttribute('class', 'caption-container');
-	imageElement.setAttribute('src', data.path);
+	imageElement.setAttribute('src', imagePath);
 	imageContainer.innerHTML = imageElement.outerHTML;
-	captionContainer.innerHTML = data.caption;
-	post.innerHTML = imageContainer.outerHTML + captionContainer.outerHTML;
+	// captionContainer.innerHTML = data.caption;
+	post.innerHTML = imageContainer.outerHTML //+ captionContainer.outerHTML;
 	return post;
 };
 
