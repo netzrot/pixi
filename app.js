@@ -14,6 +14,31 @@ var upload = multer({ dest: 'public/uploads/' });
 var port = process.env.PORT || 3000;
 
 models.sequelize.sync().then(function(){
+
+	// models.users.bulkCreate([
+	// 	{
+	// 		first_name: 'Darren',
+	// 		last_name: 'Klein',
+	// 		email: 'dklein@test.com',
+	// 		username: 'dklein',
+	// 		password: 'pass'
+	// 	},
+	// 	{
+	// 		first_name: 'James',
+	// 		last_name: 'Kim',
+	// 		email: 'jkim@test.com',
+	// 		username: 'jkim',
+	// 		password: 'pass'
+	// 	},
+	// 	{
+	// 		first_name: 'Thorsten',
+	// 		last_name: 'Schroeder',
+	// 		email: 'tschroeder@test.com',
+	// 		username: 'tschroeder',
+	// 		password: 'pass'
+	// 	}
+	// ]);
+
 	app.listen(port, function(){
 		console.log(`ExpressJS started on port ${port}`);
 	});
@@ -26,12 +51,16 @@ app.get('/', function(req, res){
 });
 
 app.post('/image-upload', upload.single('file-to-upload'), function(req, res, next){
+	var userId = 1; //FOR TESTING PURPOSES
+
 	var newImage = {
+		'userId': userId,
 		'original_name': req.file.originalname,
 		'image_url': req.file.path
 	};
 
 	var caption = {
+		'userId': userId,
 		'body': req.body.caption
 	};
 

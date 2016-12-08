@@ -12,6 +12,12 @@ module.exports = function(sequelize, DataTypes) {
             allowNull: false
           }
         });
+        Caption.belongsTo(models.users, {
+          onDelete: "CASCADE",
+          foreignKey: {
+            allowNull: false
+          }
+        });
       }
     }
   });
