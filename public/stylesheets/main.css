@@ -7,42 +7,6 @@ ul {
 	list-style: none;	
 }
 
-#input-text {
-	border-radius: 25px;
-	font-family: Cabin;
-	font-size: 14px;
-	font-style: normal;
-	font-variant: normal;
-	font-weight: 400;
-	line-height: 20px;	
-	padding-left: 15px;
-}
-
-#caption-field {
-	border-radius: 0px;
-	font-family: Cabin;
-	font-size: 12px;
-	font-style: normal;
-	font-variant: small-caps;
-	font-weight: 400;
-	line-height: 13.2px;	
-	margin-right: 50px;
-}
-
-
-#image-upload-form {
-	border-radius: 10px;
-	font-family: Cabin;
-	font-size: 12px;
-	font-style: normal;
-	font-variant: small-caps;
-	font-weight: 400;
-	line-height: 13.2px;
-	float: right;	
-	margin-top: -50px;
-	padding-right: -50px;
-}
-
 #header {
 	background-color: white;
 	width: 100%;
@@ -54,10 +18,6 @@ body {
 	background-color: #F6F8F9;
 }
 
-#button {
-	background-color: white;
-	margin-right: 30px;
-}
 
 .content-container {
 	width: 300px;
@@ -96,4 +56,59 @@ h1 {
 	font-variant: normal;
 	font-weight: 400;
 	line-height: 20px;
+}
+
+.no-pixis {
+	font-family: "Homemade Apple";
+	font-size: 20px;
+	font-style: normal;
+	font-variant: normal;
+	font-weight: 500;
+	
+}
+
+
+label.myLabel input[type="file"] {
+    position: fixed;
+    top: -1000px;
+}
+
+.myLabel {
+    border: 2px solid red;
+    height: 30px;
+    width: 30px;
+    border-radius: 30px;
+    padding: 5px 5px;
+    margin-right: 110px;
+    background: white;
+    font-family: Cabin;
+}
+
+.myLabel:hover {
+    background: red;
+}
+
+.myLabel :invalid + span {
+    color: #A44;
+}
+.myLabel :valid + span {
+    color: #4A4;
+}
+
+.input-field {
+	height: 20px;
+	border: 2px solid red;
+	border-radius: 30px;
+	font-family: Cabin;
+	font-size: 12px;
+	font-style: normal;
+	font-weight: 400;
+	line-height: 13.2px;	
+}
+
+
+#image-upload-form {
+	font-family: Cabin;
+	float: right;	
+	margin-top: -55px;
 }
