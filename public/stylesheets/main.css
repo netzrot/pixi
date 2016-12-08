@@ -37,6 +37,17 @@ h1 {
 	padding-top: 40px;
 }
 
+h4 {
+	font-family: "Homemade Apple";
+	font-size: 40px;
+	font-style: normal;
+	font-variant: normal;
+	font-weight: 500;
+	line-height: 26.4px;
+	margin-left: 200px;
+	padding-top: 40px;
+}
+
 .post-container {
 	width: 500px;
 	height: auto;
@@ -111,4 +122,23 @@ label.myLabel input[type="file"] {
 	font-family: Cabin;
 	float: right;	
 	margin-top: -55px;
+}
+
+.login-form {
+  display: table;
+  margin: 1em auto 0;
+  padding: 1.25em 0.75em;
+  border: 2px double;
+}
+.login-form label {
+  display: block;
+  margin-bottom: 0.25em;
+}
+.login-form span {
+  display: inline-block;
+  min-width: 6em;
+}
+.login-form .actions {
+  margin-top: 1em;
+  text-align: center;
 }
