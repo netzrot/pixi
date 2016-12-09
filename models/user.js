@@ -27,6 +27,7 @@ module.exports = function(sequelize, DataTypes) {
       associate: function(models) {
         User.hasMany(models.images);
         User.hasMany(models.captions);
+        User.hasMany(models.comments);
       }
     }
   });

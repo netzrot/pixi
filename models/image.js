@@ -13,6 +13,7 @@ module.exports = function(sequelize, DataTypes) {
     classMethods: {
       associate: function(models) {
         Image.hasOne(models.captions);
+        Image.hasMany(models.comments);
         Image.belongsTo(models.users, {
           onDelete: "CASCADE",
           foreignKey: {

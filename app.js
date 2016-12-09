@@ -88,7 +88,7 @@ app.get('/', function(req, res){
 });
 
 app.post('/image-upload', upload.single('file-to-upload'), function(req, res, next){
-	var userId = req.session.userId; //FOR TESTING PURPOSES
+	var userId = req.session.userId;
 
 	var newImage = {
 		'userId': userId,
@@ -127,5 +127,17 @@ app.get('/get-all', function(req, res){
 			pixis.push(pixi);
 		};
 		res.json(pixis);
+	});
+});
+
+app.post('/new-comment', function(req, res){
+	var userId = req.session.userId;
+	var comment = {
+		'userId': userId,
+		'imageId': req.body.imageId,
+		'body': req.body.body
+	};
+	models.comments.create(comment).then(function(){
+		res.redirect('/');
 	});
 });
