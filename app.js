@@ -6,6 +6,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.set('view engine', 'ejs');
 app.use('/public', express.static(__dirname + "/public"));
 var session = require('express-session');
+var passwordHash = require('password-hash');
 
 var models = require('./models');
 
@@ -22,29 +23,21 @@ app.use(session({
 
 models.sequelize.sync().then(function(){
 
-	// models.users.bulkCreate([
-	// 	{
-	// 		first_name: 'Darren',
-	// 		last_name: 'Klein',
-	// 		email: 'dklein@test.com',
-	// 		username: 'dklein',
-	// 		password: 'pass'
-	// 	},
-	// 	{
-	// 		first_name: 'James',
-	// 		last_name: 'Kim',
-	// 		email: 'jkim@test.com',
-	// 		username: 'jkim',
-	// 		password: 'pass'
-	// 	},
-	// 	{
-	// 		first_name: 'Thorsten',
-	// 		last_name: 'Schroeder',
-	// 		email: 'tschroeder@test.com',
-	// 		username: 'tschroeder',
-	// 		password: 'pass'
-	// 	}
-	// ]);
+	// var first_name = 'Darren';
+	// var last_name = 'Klein';
+	// var email = 'dklein@test.com';
+	// var username = 'dklein';
+	// var password = 'pass';
+
+	// var hashedPassword = passwordHash.generate(password);
+
+	// models.users.create({
+	// 	first_name: first_name,
+	// 	last_name: last_name,
+	// 	email: email,
+	// 	username: username,
+	// 	password: hashedPassword
+	// });
 
 	app.listen(port, function(){
 		console.log(`ExpressJS started on port ${port}`);
@@ -61,7 +54,10 @@ app.post('/login', function(req, res){
   models.users.findOne({
     where: { username: req.body.username }
   }).then(function(row){
-    if(req.body.password == row.dataValues.password) {
+
+	var correctPW = passwordHash.verify(req.body.password, row.dataValues.password);
+
+    if(correctPW){
       req.session.userId = row.dataValues.id;
       res.redirect('/')
     } else {
