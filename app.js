@@ -16,11 +16,11 @@ var upload = multer({ dest: 'public/uploads/' });
 var port = process.env.PORT || 3000;
 
 
-app.get('/signup', function(req, res) {
+app.get('/signup', function(req, res){
 	res.render('signup', {});
 })
 
-app.post('/signup', function(req, res){}
+app.post('/signup', function(req, res){
 	var hashedPassword = passwordHash.generate(req.body.password);
 	models.users.create({
 		first_name: req.body.first_name,
