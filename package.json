@@ -20,6 +20,7 @@
     "body-parser": "^1.15.2",
     "ejs": "^2.5.3",
     "express": "^4.14.0",
+    "express-session": "^1.14.2",
     "fs": "0.0.1-security",
     "multer": "^1.2.0",
     "path": "^0.12.7",

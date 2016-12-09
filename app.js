@@ -5,6 +5,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 app.set('view engine', 'ejs');
 app.use('/public', express.static(__dirname + "/public"));
+var session = require('express-session');
 
 var models = require('./models');
 
@@ -12,6 +13,12 @@ var multer = require('multer');
 var upload = multer({ dest: 'public/uploads/' });
 
 var port = process.env.PORT || 3000;
+
+app.use(session({
+  secret: 'password-protected site',
+  resave: false,
+  saveUninitialized: true
+}));
 
 models.sequelize.sync().then(function(){
 
@@ -46,12 +53,46 @@ models.sequelize.sync().then(function(){
 	console.error(err);
 });
 
+app.get('/login', function(req, res){
+	res.render('login', {});
+});
+
+app.post('/login', function(req, res){
+  models.users.findOne({
+    where: { username: req.body.username }
+  }).then(function(row){
+    if(req.body.password == row.dataValues.password) {
+      req.session.userId = row.dataValues.id;
+      res.redirect('/')
+    } else {
+      console.error("Incorrect password");
+      res.status(401).send("Could not login!");
+    }
+  }).catch(function(err) {
+    console.error(err);
+    res.status(401).send("Could not login!");
+  });
+});
+
+app.get('/logout', function(req, res){
+	req.session.userId = null;
+	res.send("Logged out");
+});
+
+app.use(function(req, res, next) {
+  if (req.session.userId){
+    next();
+    return;
+  }
+  res.status(401).send("Please login to view this page.");
+});
+
 app.get('/', function(req, res){
 	res.render('index', {});
 });
 
 app.post('/image-upload', upload.single('file-to-upload'), function(req, res, next){
-	var userId = 1; //FOR TESTING PURPOSES
+	var userId = req.session.userId; //FOR TESTING PURPOSES
 
 	var newImage = {
 		'userId': userId,
