@@ -20,11 +20,8 @@ app.get('/signup', function(req, res) {
 	res.render('signup', {});
 })
 
-
-app.post('/signup', function(req, res) {
-
+app.post('/signup', function(req, res){}
 	var hashedPassword = passwordHash.generate(req.body.password);
-
 	models.users.create({
 		first_name: req.body.first_name,
 		last_name: req.body.last_name,
@@ -33,7 +30,7 @@ app.post('/signup', function(req, res) {
 	 	password: hashedPassword
 	 });
 	res.redirect('/login');
-})
+});
 
 app.use(session({
   secret: 'password-protected site',
@@ -42,23 +39,6 @@ app.use(session({
 }));
 
 models.sequelize.sync().then(function(){
-
-	// var first_name = 'Darren';
-	// var last_name = 'Klein';
-	// var email = 'dklein@test.com';
-	// var username = 'dklein';
-	// var password = 'pass';
-
-	// var hashedPassword = passwordHash.generate(password);
-
-	// models.users.create({
-	// 	first_name: first_name,
-	// 	last_name: last_name,
-	// 	email: email,
-	// 	username: username,
-	// 	password: hashedPassword
-	// });
-
 	app.listen(port, function(){
 		console.log(`ExpressJS started on port ${port}`);
 	});
