@@ -15,6 +15,26 @@ var upload = multer({ dest: 'public/uploads/' });
 
 var port = process.env.PORT || 3000;
 
+
+app.get('/signup', function(req, res) {
+	res.render('signup', {});
+})
+
+
+app.post('/signup', function(req, res) {
+
+	var hashedPassword = passwordHash.generate(req.body.password);
+
+	models.users.create({
+		first_name: req.body.first_name,
+		last_name: req.body.last_name,
+		email: req.body.email,
+	 	username: req.body.username,
+	 	password: hashedPassword
+	 });
+	res.redirect('/login');
+})
+
 app.use(session({
   secret: 'password-protected site',
   resave: false,
