@@ -1,4 +1,5 @@
 var buildPost = function(data){
+	console.log(data);
 	var post = document.createElement('li');
 	var imageContainer = document.createElement('div');
 	var captionContainer = document.createElement('div');
@@ -7,9 +8,14 @@ var buildPost = function(data){
 	var imageIdField = document.createElement('input');
 	var commentBody = document.createElement('input');
 	var commentSubmit = document.createElement('input');
+	var commentsList = document.createElement('ul');
 	var caption = data.caption.body;
 	var imagePath = data.image_url;
 	var imageId = data.id;
+	var commentsArray = data.comments;
+	for (var i in commentsArray) {
+		$(commentsList).append("<li>"+commentsArray[i].body+"</li>");
+	}
 	post.setAttribute('class', 'post-container');
 	imageContainer.setAttribute('class', 'image-container');
 	captionContainer.setAttribute('class', 'caption-container');
@@ -23,10 +29,11 @@ var buildPost = function(data){
 	commentBody.setAttribute('name', 'body');
 	commentSubmit.setAttribute('type', 'submit');
 	commentSubmit.setAttribute('value', 'Submit');
+	commentsList.setAttribute('class', 'comments-container');
 	imageContainer.innerHTML = imageElement.outerHTML;
 	captionContainer.innerHTML = caption;
 	commentForm.innerHTML = imageIdField.outerHTML + commentBody.outerHTML + commentSubmit.outerHTML;
-	post.innerHTML = imageContainer.outerHTML + captionContainer.outerHTML + commentForm.outerHTML;
+	post.innerHTML = imageContainer.outerHTML + captionContainer.outerHTML + commentForm.outerHTML + commentsList.outerHTML;
 	return post;
 };
 

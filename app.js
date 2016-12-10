@@ -75,13 +75,13 @@ app.get('/logout', function(req, res){
 	res.send("Logged out");
 });
 
-app.use(function(req, res, next) {
-  if (req.session.userId){
-    next();
-    return;
-  }
-  res.status(401).send("Please login to view this page.");
-});
+// app.use(function(req, res, next) {
+//   if (req.session.userId){
+//     next();
+//     return;
+//   }
+//   res.status(401).send("Please login to view this page.");
+// });
 
 app.get('/', function(req, res){
 	res.render('index', {});
@@ -119,7 +119,10 @@ app.post('/image-upload', upload.single('file-to-upload'), function(req, res, ne
 app.get('/get-all', function(req, res){
 	models.images.findAll({
 	  include: [{
-	  	model: models.captions
+	  		model: models.captions
+	  	},
+	  	{
+	  		model: models.comments
 	  }]
 	}).then(function(rows){
 		pixis = [];
@@ -127,6 +130,7 @@ app.get('/get-all', function(req, res){
 			pixis.push(rows[i].dataValues);
 		};
 		res.json(pixis);
+		console.log(pixis);
 	});
 });
 
