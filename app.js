@@ -75,21 +75,20 @@ app.get('/logout', function(req, res){
 	res.send("Logged out");
 });
 
-// app.use(function(req, res, next) {
-//   if (req.session.userId){
-//     next();
-//     return;
-//   }
-//   res.status(401).send("Please login to view this page.");
-// });
+app.use(function(req, res, next) {
+  if (req.session.userId){
+    next();
+    return;
+  }
+  res.status(401).send("Please login to view this page.");
+});
 
 app.get('/', function(req, res){
 	res.render('index', {});
 });
 
 app.post('/image-upload', upload.single('file-to-upload'), function(req, res, next){
-	//var userId = req.session.userId;
-	var userId = 1; //DELETE THIS LINE!!!
+	var userId = req.session.userId;
 
 	var newImage = {
 		'userId': userId,
