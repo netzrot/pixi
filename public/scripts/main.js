@@ -1,5 +1,4 @@
 var buildPost = function(data){
-	console.log(data.caption.body)
 	var post = document.createElement('li');
 	var imageContainer = document.createElement('div');
 	var captionContainer = document.createElement('div');

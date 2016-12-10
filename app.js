@@ -75,20 +75,21 @@ app.get('/logout', function(req, res){
 	res.send("Logged out");
 });
 
-app.use(function(req, res, next) {
-  if (req.session.userId){
-    next();
-    return;
-  }
-  res.status(401).send("Please login to view this page.");
-});
+// app.use(function(req, res, next) {
+//   if (req.session.userId){
+//     next();
+//     return;
+//   }
+//   res.status(401).send("Please login to view this page.");
+// });
 
 app.get('/', function(req, res){
 	res.render('index', {});
 });
 
 app.post('/image-upload', upload.single('file-to-upload'), function(req, res, next){
-	var userId = req.session.userId;
+	//var userId = req.session.userId;
+	var userId = 1; //DELETE THIS LINE!!!
 
 	var newImage = {
 		'userId': userId,
@@ -102,11 +103,16 @@ app.post('/image-upload', upload.single('file-to-upload'), function(req, res, ne
 	};
 
 	models.images.create(newImage).then(function(){
-		var imageId = this.dataValues.id;
-		caption.imageId = imageId;
+		var image = this.dataValues;
+		caption.imageId = image.id;
 		models.captions.create(caption).then(function(){
-			res.json({	'image': newImage,
-						'caption': caption  })
+			models.images.findById(image.id, {
+				include: [{
+					model: models.captions
+				}]
+			}).then(function(row){
+				res.json(row.dataValues)
+			})
 		})
 	})
 });
