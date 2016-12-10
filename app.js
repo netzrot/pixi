@@ -112,19 +112,14 @@ app.post('/image-upload', upload.single('file-to-upload'), function(req, res, ne
 });
 
 app.get('/get-all', function(req, res){
-	models.captions.findAll({
+	models.images.findAll({
 	  include: [{
-	  	model: models.images
+	  	model: models.captions
 	  }]
 	}).then(function(rows){
-		var pixis = [];
+		pixis = [];
 		for(var i = 0; i < rows.length; i++){
-		 	var pixi = {};
-		 	pixi.image = rows[i].dataValues.image;
-		 	pixi.caption = {
-		 		'body': rows[i].dataValues.body
-		 	}
-			pixis.push(pixi);
+			pixis.push(rows[i].dataValues);
 		};
 		res.json(pixis);
 	});

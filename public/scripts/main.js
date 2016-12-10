@@ -1,4 +1,5 @@
 var buildPost = function(data){
+	console.log(data.caption.body)
 	var post = document.createElement('li');
 	var imageContainer = document.createElement('div');
 	var captionContainer = document.createElement('div');
@@ -8,8 +9,8 @@ var buildPost = function(data){
 	var commentBody = document.createElement('input');
 	var commentSubmit = document.createElement('input');
 	var caption = data.caption.body;
-	var imagePath = data.image.image_url;
-	var imageId = data.image.id;
+	var imagePath = data.image_url;
+	var imageId = data.id;
 	post.setAttribute('class', 'post-container');
 	imageContainer.setAttribute('class', 'image-container');
 	captionContainer.setAttribute('class', 'caption-container');
