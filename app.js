@@ -75,13 +75,13 @@ app.get('/logout', function(req, res){
 	res.send("Logged out");
 });
 
-// app.use(function(req, res, next) {
-//   if (req.session.userId){
-//     next();
-//     return;
-//   }
-//   res.status(401).send("Please login to view this page.");
-// });
+app.use(function(req, res, next) {
+  if (req.session.userId){
+    next();
+    return;
+  }
+  res.status(401).send("Please login to view this page.");
+});
 
 app.get('/', function(req, res){
 	res.render('index', {});
@@ -135,7 +135,6 @@ app.get('/get-all', function(req, res){
 
 app.post('/new-comment', function(req, res){
 	var userId = req.session.userId;
-	var userId = 1; //DELETE THIS
 	var comment = {
 		'userId': userId,
 		'imageId': req.body.imageId,

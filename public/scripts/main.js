@@ -14,7 +14,7 @@ var buildPost = function(data){
 	var commentsArray = data.comments;
 	for (var i in commentsArray) {
 		$(commentsList).append("<li>"+commentsArray[i].body+"</li>");
-	}
+	};
 	post.setAttribute('class', 'post-container');
 	imageContainer.setAttribute('class', 'image-container');
 	captionContainer.setAttribute('class', 'caption-container');
@@ -25,6 +25,7 @@ var buildPost = function(data){
 	imageIdField.setAttribute('value', imageId);
 	commentBody.setAttribute('type', 'text');
 	commentBody.setAttribute('name', 'body');
+	commentBody.setAttribute('class', 'comment-body');
 	commentSubmit.setAttribute('type', 'submit');
 	commentSubmit.setAttribute('value', 'Submit');
 	commentsList.setAttribute('class', 'comments-container');
@@ -87,25 +88,16 @@ var loadPosts = function(){
 
 $(document).on("submit", ".comment-form", function(e){
 	var container = $(this).next();
+	var commentBodyInput = $(this).find(".comment-body");
 	$.ajax({
       	type:'POST',
       	url:'/new-comment',
       	data: $(this).serialize()
   	}).done(function(data){
+  		$(commentBodyInput).val("");
   		$(container).prepend("<li>" + data.body + "</li>");
-
-
-		// if($(".no-pixis")){
-		// 	$(".no-pixis").remove();
-		// };
-	 //    $("#posts-container").prepend(buildPost(data));
-	 //    $(inputFields).val("");
 	}).fail(function(data){
-	    //alert('Upload failed. Sorry! There seems to have been an error, please try again.');
+	    alert('Comment failed. Sorry! There seems to have been an error, please try again.');
 	});
-
 	e.preventDefault();
 });
-
-
-
