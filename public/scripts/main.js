@@ -1,5 +1,4 @@
 var buildPost = function(data){
-	console.log(data);
 	var post = document.createElement('li');
 	var imageContainer = document.createElement('div');
 	var captionContainer = document.createElement('div');
@@ -20,8 +19,7 @@ var buildPost = function(data){
 	imageContainer.setAttribute('class', 'image-container');
 	captionContainer.setAttribute('class', 'caption-container');
 	imageElement.setAttribute('src', imagePath);
-	commentForm.setAttribute('action', '/new-comment');
-	commentForm.setAttribute('method', 'POST');
+	commentForm.setAttribute('class', 'comment-form');
 	imageIdField.setAttribute('type', 'text');
 	imageIdField.setAttribute('name', 'imageId');
 	imageIdField.setAttribute('value', imageId);
@@ -86,3 +84,28 @@ var loadPosts = function(){
 	});
 	return postsContainer;
 };
+
+$(document).on("submit", ".comment-form", function(e){
+	var container = $(this).next();
+	$.ajax({
+      	type:'POST',
+      	url:'/new-comment',
+      	data: $(this).serialize()
+  	}).done(function(data){
+  		$(container).prepend("<li>" + data.body + "</li>");
+
+
+		// if($(".no-pixis")){
+		// 	$(".no-pixis").remove();
+		// };
+	 //    $("#posts-container").prepend(buildPost(data));
+	 //    $(inputFields).val("");
+	}).fail(function(data){
+	    //alert('Upload failed. Sorry! There seems to have been an error, please try again.');
+	});
+
+	e.preventDefault();
+});
+
+
+

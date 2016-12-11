@@ -130,18 +130,18 @@ app.get('/get-all', function(req, res){
 			pixis.push(rows[i].dataValues);
 		};
 		res.json(pixis);
-		console.log(pixis);
 	});
 });
 
 app.post('/new-comment', function(req, res){
 	var userId = req.session.userId;
+	var userId = 1; //DELETE THIS
 	var comment = {
 		'userId': userId,
 		'imageId': req.body.imageId,
 		'body': req.body.body
 	};
 	models.comments.create(comment).then(function(){
-		res.redirect('/');
+		res.json(this.dataValues);
 	});
 });
