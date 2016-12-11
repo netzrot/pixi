@@ -3,6 +3,7 @@ var buildPost = function(data){
 	var imageContainer = document.createElement('div');
 	var captionContainer = document.createElement('div');
 	var imageElement = document.createElement('img');
+	var imageDelete = document.createElement('input'); // image delete button
 	var commentForm = document.createElement('form');
 	var imageIdField = document.createElement('input');
 	var commentBody = document.createElement('input');
@@ -28,11 +29,16 @@ var buildPost = function(data){
 	commentBody.setAttribute('class', 'comment-body');
 	commentSubmit.setAttribute('type', 'submit');
 	commentSubmit.setAttribute('value', 'Submit');
+	imageDelete.setAttribute('class', 'delete-image');
+	imageDelete.setAttribute('action', '/delete-image'); // Delete Button for image
+	imageDelete.setAttribute('type', 'submit'); // Delete Button for image
+	imageDelete.setAttribute('value', 'Delete'); // Delete Button for image
+	imageDelete.setAttribute('data-imageid', imageId); // Delete Button for image
 	commentsList.setAttribute('class', 'comments-container');
 	imageContainer.innerHTML = imageElement.outerHTML;
 	captionContainer.innerHTML = caption;
 	commentForm.innerHTML = imageIdField.outerHTML + commentBody.outerHTML + commentSubmit.outerHTML;
-	post.innerHTML = imageContainer.outerHTML + captionContainer.outerHTML + commentForm.outerHTML + commentsList.outerHTML;
+	post.innerHTML = imageDelete.outerHTML + imageContainer.outerHTML + captionContainer.outerHTML + commentForm.outerHTML + commentsList.outerHTML;
 	return post;
 };
 
@@ -100,4 +106,11 @@ $(document).on("submit", ".comment-form", function(e){
 	    alert('Comment failed. Sorry! There seems to have been an error, please try again.');
 	});
 	e.preventDefault();
+});
+
+$(document).on("click", ".delete-image", function() {
+	var imageId = $(this).data("imageid");
+	$.post("/delete-image", {imageId: imageId}, function(response) {
+		console.log(response);
+	});
 });

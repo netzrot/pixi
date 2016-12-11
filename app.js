@@ -144,3 +144,18 @@ app.post('/new-comment', function(req, res){
 		res.json(this.dataValues);
 	});
 });
+
+app.post('/delete-image', function(req, res) {
+	var imageId = req.body.imageId;
+	models.images.findById(imageId).then(function(row){
+		if (row.dataValues.userId == req.session.userId){
+		 	models.images.destroy({
+		    	where: {
+		    		id: imageId
+		    	}
+		    }).then(function(){
+		 		res.send("deleted");
+			});
+		}
+	})
+});
