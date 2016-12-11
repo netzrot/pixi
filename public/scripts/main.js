@@ -122,8 +122,9 @@ $(document).on("submit", ".comment-form", function(e){
 
 $(document).on("click", ".delete-image", function(){
 	var imageId = $(this).data("imageid");
-	$.post("/delete-image", {imageId: imageId}, function(response){
-		console.log(response);
+	var postContainer = $(this).parents("li");
+	$.post("/delete-image", {imageId: imageId}, function(){
+		postContainer.remove();
 	});
 });
 
