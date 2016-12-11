@@ -75,13 +75,13 @@ $('#image-upload-form').submit(function(e){
 	      	data : formData,                  
 	      	contentType: false,
 	      	processData: false
-	  	}).done(function(data){
+	  	}).done(function(response){
 			if($(".no-pixis")){
 				$(".no-pixis").remove();
 			};
-		    $("#posts-container").prepend(buildPost(data));
+		    $("#posts-container").prepend(buildPost(response.pixi, response.currentUser));//NEED TO FIX THIS SO IT PASSES CURRENT USER TOO
 		    $(inputFields).val("");
-		}).fail(function(data){
+		}).fail(function(response){
 		    alert('Upload failed. Sorry! There seems to have been an error, please try again.');
 		});
 	};

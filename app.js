@@ -110,7 +110,10 @@ app.post('/image-upload', upload.single('file-to-upload'), function(req, res, ne
 					model: models.captions
 				}]
 			}).then(function(row){
-				res.json(row.dataValues)
+				res.json({
+					pixi: row.dataValues,
+					currentUser: userId
+				})
 			})
 		})
 	})
