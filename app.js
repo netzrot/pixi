@@ -75,20 +75,21 @@ app.get('/logout', function(req, res){
 	res.send("Logged out");
 });
 
-app.use(function(req, res, next) {
-  if (req.session.userId){
-    next();
-    return;
-  }
-  res.status(401).send("Please login to view this page.");
-});
+// app.use(function(req, res, next) {
+//   if (req.session.userId){
+//     next();
+//     return;
+//   }
+//   res.status(401).send("Please login to view this page.");
+// });
 
 app.get('/', function(req, res){
 	res.render('index', {});
 });
 
 app.post('/image-upload', upload.single('file-to-upload'), function(req, res, next){
-	var userId = req.session.userId;
+	//var userId = req.session.userId;
+	var userId = 1;//DELETE THIS
 
 	var newImage = {
 		'userId': userId,
@@ -117,6 +118,8 @@ app.post('/image-upload', upload.single('file-to-upload'), function(req, res, ne
 });
 
 app.get('/get-all', function(req, res){
+	//var userId = req.session.userId;
+	var userId = 1;//DELETE THIS
 	models.images.findAll({
 	  include: [{
 	  		model: models.captions
@@ -129,7 +132,10 @@ app.get('/get-all', function(req, res){
 		for(var i = 0; i < rows.length; i++){
 			pixis.push(rows[i].dataValues);
 		};
-		res.json(pixis);
+		res.json({
+			pixis: pixis,
+			currentUser: userId
+		});
 	});
 });
 
@@ -157,5 +163,22 @@ app.post('/delete-image', function(req, res) {
 		 		res.send("deleted");
 			});
 		}
-	})
+	});
+});
+
+app.post('/edit-caption', function(req, res){
+	var captionId = req.body.captionId;
+	req.session.userId = 1;//DELETE THIS
+	models.captions.findById(captionId).then(function(row){
+		if (row.dataValues.userId == req.session.userId){
+			models.captions.update({
+				body: req.body.caption
+			},
+			{
+				where: {id: captionId}
+			}).then(function(){
+				res.json({editedCaption: req.body.caption})
+			});
+		};
+	});
 });

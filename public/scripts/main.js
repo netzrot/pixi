@@ -1,9 +1,9 @@
-var buildPost = function(data){
+var buildPost = function(data, currentUser){
 	var post = document.createElement('li');
 	var imageContainer = document.createElement('div');
 	var captionContainer = document.createElement('div');
+	var captionText = document.createElement('div');
 	var imageElement = document.createElement('img');
-	var imageDelete = document.createElement('input'); // image delete button
 	var commentForm = document.createElement('form');
 	var imageIdField = document.createElement('input');
 	var commentBody = document.createElement('input');
@@ -19,9 +19,11 @@ var buildPost = function(data){
 	post.setAttribute('class', 'post-container');
 	imageContainer.setAttribute('class', 'image-container');
 	captionContainer.setAttribute('class', 'caption-container');
+	captionText.setAttribute('class', 'caption-text');
+	captionText.setAttribute('data-captionid', data.caption.id);
 	imageElement.setAttribute('src', imagePath);
 	commentForm.setAttribute('class', 'comment-form');
-	imageIdField.setAttribute('type', 'text');
+	imageIdField.setAttribute('type', 'hidden');
 	imageIdField.setAttribute('name', 'imageId');
 	imageIdField.setAttribute('value', imageId);
 	commentBody.setAttribute('type', 'text');
@@ -29,16 +31,26 @@ var buildPost = function(data){
 	commentBody.setAttribute('class', 'comment-body');
 	commentSubmit.setAttribute('type', 'submit');
 	commentSubmit.setAttribute('value', 'Submit');
-	imageDelete.setAttribute('class', 'delete-image');
-	imageDelete.setAttribute('action', '/delete-image'); // Delete Button for image
-	imageDelete.setAttribute('type', 'submit'); // Delete Button for image
-	imageDelete.setAttribute('value', 'Delete'); // Delete Button for image
-	imageDelete.setAttribute('data-imageid', imageId); // Delete Button for image
 	commentsList.setAttribute('class', 'comments-container');
 	imageContainer.innerHTML = imageElement.outerHTML;
-	captionContainer.innerHTML = caption;
+	captionText.innerHTML = caption;
+	captionContainer.innerHTML = captionText.outerHTML;
+
+	if(currentUser == data.userId){
+		var imageDelete = document.createElement('button');
+		imageDelete.setAttribute('class', 'delete-image');
+		imageDelete.innerHTML = 'Delete';
+		imageDelete.setAttribute('data-imageid', imageId);
+		imageContainer.innerHTML += imageDelete.outerHTML;
+
+		var editButton = document.createElement('button');
+		editButton.setAttribute('class', 'edit-caption')
+		editButton.innerHTML = "Edit";
+		captionContainer.innerHTML += editButton.outerHTML;
+	};
+
 	commentForm.innerHTML = imageIdField.outerHTML + commentBody.outerHTML + commentSubmit.outerHTML;
-	post.innerHTML = imageDelete.outerHTML + imageContainer.outerHTML + captionContainer.outerHTML + commentForm.outerHTML + commentsList.outerHTML;
+	post.innerHTML = imageContainer.outerHTML + captionContainer.outerHTML + commentForm.outerHTML + commentsList.outerHTML;
 	return post;
 };
 
@@ -80,12 +92,12 @@ var loadPosts = function(){
 	var postsContainer = document.createElement('ul');
 	postsContainer.setAttribute('id', 'posts-container');
 	$.get("/get-all", function(response){
-		if(response.length === 0){
+		if(response.pixis.length === 0){
 			postsContainer.innerHTML = "<p class='no-pixis'>Post your first Pixi!</p>";
 		}
 		else{
-			for(var i = (response.length - 1); i >= 0; i--){
-				postsContainer.innerHTML += buildPost(response[i]).outerHTML;
+			for(var i = (response.pixis.length - 1); i >= 0; i--){
+				postsContainer.innerHTML += buildPost(response.pixis[i], response.currentUser).outerHTML;
 			};
 		};
 	});
@@ -108,9 +120,52 @@ $(document).on("submit", ".comment-form", function(e){
 	e.preventDefault();
 });
 
-$(document).on("click", ".delete-image", function() {
+$(document).on("click", ".delete-image", function(){
 	var imageId = $(this).data("imageid");
-	$.post("/delete-image", {imageId: imageId}, function(response) {
+	$.post("/delete-image", {imageId: imageId}, function(response){
 		console.log(response);
 	});
+});
+
+$(document).on("click", ".edit-caption", function(){
+	var originalCaption = $(this).prev().html();
+	var captionId = $(this).prev().data("captionid");
+	var editCaptionForm = document.createElement("form");
+	var editCaptionId = document.createElement("input");
+	var editCaptionText = document.createElement("input");
+	var editCaptionSubmit = document.createElement("input");
+	editCaptionForm.setAttribute('class', 'edit-caption-form');
+	editCaptionId.setAttribute('type', 'hidden');
+	editCaptionId.setAttribute('value', captionId);
+	editCaptionId.setAttribute('name', 'captionId');
+	editCaptionText.setAttribute('type', 'text');
+	editCaptionText.setAttribute('value', originalCaption);
+	editCaptionText.setAttribute('name', 'caption');
+	editCaptionSubmit.setAttribute('type', 'submit');
+	editCaptionSubmit.setAttribute('value', 'Submit');
+	editCaptionForm.innerHTML = editCaptionId.outerHTML + editCaptionText.outerHTML + editCaptionSubmit.outerHTML;
+	$(this).prev().replaceWith(editCaptionForm);
+	$(this).remove();
+});
+
+$(document).on("submit", ".edit-caption-form", function(e){
+	var editCaptionForm = this;
+	$.ajax({
+      	type:'POST',
+      	url:'/edit-caption',
+      	data: $(this).serialize()
+  	}).done(function(data){
+  		var captionText = document.createElement('div');
+		captionText.setAttribute('class', 'caption-text');
+		captionText.innerHTML = data.editedCaption;
+
+		var editButton = document.createElement('button');
+		editButton.setAttribute('class', 'edit-caption')
+		editButton.innerHTML = "Edit";
+		
+  		$(editCaptionForm).replaceWith(captionText.outerHTML + editButton.outerHTML);
+	}).fail(function(data){
+	    alert('Edit failed. Sorry! There seems to have been an error, please try again.');
+	});
+	e.preventDefault();
 });
