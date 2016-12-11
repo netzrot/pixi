@@ -19,8 +19,8 @@ var buildPost = function(data, currentUser){
 	post.setAttribute('class', 'post-container');
 	imageContainer.setAttribute('class', 'image-container');
 	captionContainer.setAttribute('class', 'caption-container');
+	captionContainer.setAttribute('data-captionid', data.caption.id);
 	captionText.setAttribute('class', 'caption-text');
-	captionText.setAttribute('data-captionid', data.caption.id);
 	imageElement.setAttribute('src', imagePath);
 	commentForm.setAttribute('class', 'comment-form');
 	imageIdField.setAttribute('type', 'hidden');
@@ -129,7 +129,7 @@ $(document).on("click", ".delete-image", function(){
 
 $(document).on("click", ".edit-caption", function(){
 	var originalCaption = $(this).prev().html();
-	var captionId = $(this).prev().data("captionid");
+	var captionId = $(this).parent().data("captionid");
 	var editCaptionForm = document.createElement("form");
 	var editCaptionId = document.createElement("input");
 	var editCaptionText = document.createElement("input");
