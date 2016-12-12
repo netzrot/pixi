@@ -9,24 +9,23 @@
 </head>
 <body>
 
+
 <div id="header">
 <h1>Pixi</h1>
 
-  <form class="login-form" action="/login" method="post">
-    <label>
-      <span>Username:</span>
-      <input type="text" name="username" />
-    </label>
-    <label>
-      <span>Password:</span>
-      <input type= "password" name="password" />
-    </label>
-
+<form class="login-form" action="/login" method="post">
+    <label for="first_name">Username:</label>
+    <input type="text" id="username" name="username" />
+    <label for="password">Password:</label>
+    <input type="password" id="password" name="password" />
     <div class="actions">
-      <input type="submit" value="Login" />
+      <input id="login-button" type="submit" value="login" />
     </div>
+    <a href="./signup">sign up</a>
   </form>
 </div>
+
+
 
 <div id="body">
 <div class="content-container"></div>
