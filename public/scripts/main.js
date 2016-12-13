@@ -123,10 +123,6 @@ $(document).on("submit", ".comment-form", function(e){
 $(document).on("click", ".delete-image", function(){
 	var imageId = $(this).data("imageid");
 	var postContainer = $(this).parents("li");
-	// $.post("/delete-image", {imageId: imageId}, function(){
-	// 	postContainer.remove();
-	// });
-
 	$.ajax({
       	type:'DELETE',
       	url:'/delete-image',
@@ -162,7 +158,7 @@ $(document).on("click", ".edit-caption", function(){
 $(document).on("submit", ".edit-caption-form", function(e){
 	var editCaptionForm = this;
 	$.ajax({
-      	type:'POST',
+      	type:'PATCH',
       	url:'/edit-caption',
       	data: $(this).serialize()
   	}).done(function(data){
