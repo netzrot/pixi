@@ -123,8 +123,18 @@ $(document).on("submit", ".comment-form", function(e){
 $(document).on("click", ".delete-image", function(){
 	var imageId = $(this).data("imageid");
 	var postContainer = $(this).parents("li");
-	$.post("/delete-image", {imageId: imageId}, function(){
-		postContainer.remove();
+	// $.post("/delete-image", {imageId: imageId}, function(){
+	// 	postContainer.remove();
+	// });
+
+	$.ajax({
+      	type:'DELETE',
+      	url:'/delete-image',
+      	data: {imageId: imageId}
+  	}).done(function(){
+  		postContainer.remove();
+	}).fail(function(){
+	    alert('Delete failed. Sorry! There seems to have been an error, please try again.');
 	});
 });
 
