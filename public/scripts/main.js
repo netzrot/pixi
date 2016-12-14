@@ -145,6 +145,7 @@ $(document).on("click", ".edit-caption", function(){
 	editCaptionText.setAttribute('name', 'caption');
 	editCaptionSubmit.setAttribute('type', 'submit');
 	editCaptionSubmit.setAttribute('value', 'Submit');
+	editCaptionSubmit.setAttribute('class', 'edit-caption');
 	editCaptionForm.innerHTML = editCaptionId.outerHTML + editCaptionText.outerHTML + editCaptionSubmit.outerHTML;
 	$(this).prev().replaceWith(editCaptionForm);
 	$(this).remove();
