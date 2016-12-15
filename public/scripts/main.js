@@ -159,9 +159,9 @@ $(document).on("submit", ".edit-caption-form", function(e){
       	data: $(this).serialize()
   	}).done(function(data){
   		var captionText = document.createElement('div');
-		captionText.setAttribute('class', 'caption-text');
+  		captionText.setAttribute('class', 'caption-text');
 		captionText.innerHTML = data.editedCaption;
-
+		
 		var editButton = document.createElement('button');
 		editButton.setAttribute('class', 'edit-caption')
 		editButton.innerHTML = "Edit";

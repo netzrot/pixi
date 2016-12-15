@@ -57,7 +57,7 @@ h4 {
 
 .caption-container {
 	background-color: white;
-	height: 30px;
+	height: 40px;
 	padding-top: 15px;
 	padding-bottom: 15px;
 	padding-left: 10px;
@@ -69,24 +69,6 @@ h4 {
 	line-height: 20px;
 }
 
-
-
-.no-pixis {
-	font-family: "Homemade Apple";
-	font-size: 20px;
-	font-style: normal;
-	font-variant: normal;
-	font-weight: 500;
-	
-}
-
-
-label.myLabel input[type="file"] {
-    position: fixed;
-    top: -1000px;
-}
-
-
 .edit-caption {
 	border: 1px solid grey;
    	height: 20px;
@@ -97,6 +79,22 @@ label.myLabel input[type="file"] {
     font-family: Cabin;
     float:right;
 }
+
+
+.no-pixis {
+	font-family: "Homemade Apple";
+	font-size: 20px;
+	font-style: normal;
+	font-variant: normal;
+	font-weight: 500;
+}
+
+
+label.myLabel input[type="file"] {
+    position: fixed;
+    top: -1000px;
+}
+
 
 .delete-image {
 	border: 1px solid grey;
@@ -184,7 +182,6 @@ label.myLabel input[type="file"] {
 	font-weight: 400;
 	line-height: 13.2px;	
 }
-
 
 #image-upload-form {
 	font-family: Cabin;
