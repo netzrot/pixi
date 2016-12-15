@@ -23,6 +23,13 @@ models.sequelize.sync().then(function(){
 	console.error(err);
 });
 
+app.use(session({
+  secret: 'password-protected site',
+  resave: false,
+  saveUninitialized: true
+}));
+
+
 app.get('/signup', function(req, res){
 	res.render('signup', {});
 })
@@ -38,12 +45,6 @@ app.post('/signup', function(req, res){
 	 });
 	res.redirect('/login');
 });
-
-// app.use(session({
-//   secret: 'password-protected site',
-//   resave: false,
-//   saveUninitialized: true
-// }));
 
 app.get('/login', function(req, res){
 	res.render('login', {});
@@ -74,20 +75,20 @@ app.get('/logout', function(req, res){
 	res.send("Logged out");
 });
 
-// app.use(function(req, res, next) {
-//   if (req.session.userId){
-//     next();
-//     return;
-//   }
-//   res.status(401).send("Please login to view this page.");
-// });
+app.use(function(req, res, next) {
+  if (req.session.userId){
+    next();
+    return;
+  }
+  res.status(401).send("Please login to view this page.");
+});
 
 app.get('/', function(req, res){
 	res.render('index', {});
 });
 
 app.post('/image-upload', upload.single('file-to-upload'), function(req, res, next){
-	var userId = 1//req.session.userId;
+	var userId = req.session.userId;
 	
 	var image = {
 		'userId': userId,
@@ -100,12 +101,9 @@ app.post('/image-upload', upload.single('file-to-upload'), function(req, res, ne
 		'body': req.body.caption
 	};
 
-
 	if(req.body.tags != ''){
 		var user_tags = req.body.tags.split(' ');
-	}
-
-
+	};
 
 	models.images.create(image).then(function(image){
 		var imageId = image.dataValues.id;
@@ -140,7 +138,6 @@ app.post('/image-upload', upload.single('file-to-upload'), function(req, res, ne
 			        })
 
 				})
-
 			}
 			else{
 				models.images.findById(image.id, {
@@ -159,7 +156,7 @@ app.post('/image-upload', upload.single('file-to-upload'), function(req, res, ne
 });
 
 app.get('/get-all', function(req, res){
-	var userId = 1//req.session.userId;
+	var userId = req.session.userId;
 	models.images.findAll({
 	  include: [{
 	  		model: models.captions
