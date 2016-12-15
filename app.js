@@ -101,12 +101,9 @@ app.post('/image-upload', upload.single('file-to-upload'), function(req, res, ne
 	};
 
 
-
-	var user_tags = req.body.tags.split(' ');
-
-
-
-
+	if(req.body.tags != ''){
+		var user_tags = req.body.tags.split(' ');
+	}
 
 
 
@@ -115,32 +112,46 @@ app.post('/image-upload', upload.single('file-to-upload'), function(req, res, ne
 		caption.imageId = imageId;
 		models.captions.create(caption).then(function(){
 
-			models.sequelize.transaction(function(t){
-	        	var userPromises = [];
+			if(user_tags){
 
-		       for (var i = 0; i < user_tags.length; i++) {
-		        	var newPromise = models.users.findOne({where: {username: user_tags[i]}}, {transaction: t});
-		        	userPromises.push(newPromise);
-		        };
-		        return Promise.all(userPromises).then(function(users){
-		        	var tagPromises = [];
-		        	for(var i = 0; i < users.length; i++){
-		        		tagPromises.push(models.user_tags.create({'userId': users[i].dataValues.id, 'imageId': imageId}, {transaction: t}))
-		        	}
-		        	return Promise.all(tagPromises).then(function(tags){
+				models.sequelize.transaction(function(t){
+		        	var userPromises = [];
 
-						models.images.findById(image.id, {
-							include: [{model: models.captions}, {model: models.users}]
-						}).then(function(row){
-							res.json({
-								pixi: row.dataValues,
-								currentUser: userId
+			       for (var i = 0; i < user_tags.length; i++) {
+			        	var newPromise = models.users.findOne({where: {username: user_tags[i]}}, {transaction: t});
+			        	userPromises.push(newPromise);
+			        };
+			        return Promise.all(userPromises).then(function(users){
+			        	var tagPromises = [];
+			        	for(var i = 0; i < users.length; i++){
+			        		tagPromises.push(models.user_tags.create({'userId': users[i].dataValues.id, 'imageId': imageId}, {transaction: t}))
+			        	}
+			        	return Promise.all(tagPromises).then(function(tags){
+
+							models.images.findById(image.id, {
+								include: [{model: models.captions}, {model: models.users}]
+							}).then(function(row){
+								res.json({
+									pixi: row.dataValues,
+									currentUser: userId
+								})
 							})
-						})
-		        	})
-		        })
+			        	})
+			        })
 
-			})
+				})
+
+			}
+			else{
+				models.images.findById(image.id, {
+					include: [{model: models.captions}]
+				}).then(function(row){
+					res.json({
+						pixi: row.dataValues,
+						currentUser: userId
+					})
+				})
+			}
 
 		})
 	});
