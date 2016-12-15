@@ -115,11 +115,6 @@ app.post('/image-upload', upload.single('file-to-upload'), function(req, res, ne
 		caption.imageId = imageId;
 		models.captions.create(caption).then(function(){
 
-
-
-
-
-
 			models.sequelize.transaction(function(t){
 	        	var userPromises = [];
 
@@ -133,59 +128,22 @@ app.post('/image-upload', upload.single('file-to-upload'), function(req, res, ne
 		        		tagPromises.push(models.user_tags.create({'userId': users[i].dataValues.id, 'imageId': imageId}, {transaction: t}))
 		        	}
 		        	return Promise.all(tagPromises).then(function(tags){
-		        		res.json({
-		        			thing: 'woo'
-		        		});
+
+						models.images.findById(image.id, {
+							include: [{model: models.captions}, {model: models.users}]
+						}).then(function(row){
+							res.json({
+								pixi: row.dataValues,
+								currentUser: userId
+							})
+						})
 		        	})
 		        })
 
 			})
 
-
-
-
-
-
-
-
 		})
 	});
-
-
-
-
-
-
-
-
-
-
-	// models.images.create(image).then(function(image){
-	// 	var imageId = image.dataValues.id;
-	// 	caption.imageId = imageId;
-	// 	models.captions.create(caption).then(function(){
-
-	// 		models.sequelize.transaction(function(t){
-	//         	var promises = [];
-
-	//         	for(var i = 0; i < user_tags.length; i++){
-	//         		models.users.findOne({
-	//     				where: { username: user_tags[i] }
-	//   				}).then(function(user){
-	//             		var newPromise = models.user_tags.create({'userId': user.dataValues.id, 'imageId': imageId}, {transaction: t});
-	//            			promises.push(newPromise);
-	//            		});
-	//         	};
-
-	//         	return Promise.all(promises).then(function(){
-	// 				console.log("done")
-	//         	})
-
-	// 		})
-	// 	})
-	// });
-
-
 
 });
 
