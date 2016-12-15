@@ -105,24 +105,51 @@ app.post('/image-upload', upload.single('file-to-upload'), function(req, res, ne
 	var user_tags = req.body.tags.split(' ');
 
 
-	models.images.create(image).then(function(){
-		var imageId = this.dataValues.id;
+
+
+
+
+
+	models.images.create(image).then(function(image){
+		var imageId = image.dataValues.id;
 		caption.imageId = imageId;
 		models.captions.create(caption).then(function(){
 
-			for(var i in user_tags){
- 				models.users.findOne({
-    				where: { username: user_tags[i] }
-  				}).then(function(user){
-					user_tag = {
-						'userId': user.id,
-						'imageId': imageId
-					}
-					models.user_tags.create(user_tag)
-				})
-			}
+
+
+
+
+
+			models.sequelize.transaction(function(t){
+	        	var userPromises = [];
+
+		       for (var i = 0; i < user_tags.length; i++) {
+		        	var newPromise = models.users.findOne({where: {username: user_tags[i]}}, {transaction: t});
+		        	userPromises.push(newPromise);
+		        };
+		        return Promise.all(userPromises).then(function(users){
+		        	var tagPromises = [];
+		        	for(var i = 0; i < users.length; i++){
+		        		tagPromises.push(models.user_tags.create({'userId': users[i].dataValues.id, 'imageId': imageId}, {transaction: t}))
+		        	}
+		        	return Promise.all(tagPromises).then(function(tags){
+		        		res.json({
+		        			thing: 'woo'
+		        		});
+		        	})
+		        })
+
+			})
+
+
+
+
+
+
+
+
 		})
-	})
+	});
 
 
 
@@ -132,22 +159,34 @@ app.post('/image-upload', upload.single('file-to-upload'), function(req, res, ne
 
 
 
-	// models.images.create(newImage).then(function(){
-	// 	var image = this.dataValues;
-	// 	caption.imageId = image.id;
+
+	// models.images.create(image).then(function(image){
+	// 	var imageId = image.dataValues.id;
+	// 	caption.imageId = imageId;
 	// 	models.captions.create(caption).then(function(){
-	// 		models.images.findById(image.id, {
-	// 			include: [{
-	// 				model: models.captions
-	// 			}]
-	// 		}).then(function(row){
-	// 			res.json({
-	// 				pixi: row.dataValues,
-	// 				currentUser: userId
-	// 			})
+
+	// 		models.sequelize.transaction(function(t){
+	//         	var promises = [];
+
+	//         	for(var i = 0; i < user_tags.length; i++){
+	//         		models.users.findOne({
+	//     				where: { username: user_tags[i] }
+	//   				}).then(function(user){
+	//             		var newPromise = models.user_tags.create({'userId': user.dataValues.id, 'imageId': imageId}, {transaction: t});
+	//            			promises.push(newPromise);
+	//            		});
+	//         	};
+
+	//         	return Promise.all(promises).then(function(){
+	// 				console.log("done")
+	//         	})
+
 	// 		})
 	// 	})
-	// })	
+	// });
+
+
+
 });
 
 app.get('/get-all', function(req, res){
