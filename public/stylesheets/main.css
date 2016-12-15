@@ -57,7 +57,7 @@ h4 {
 
 .caption-container {
 	background-color: white;
-	height: 15px;
+	height: 40px;
 	padding-top: 15px;
 	padding-bottom: 15px;
 	padding-left: 10px;
@@ -69,19 +69,85 @@ h4 {
 	line-height: 20px;
 }
 
+.edit-caption {
+	border: 1px solid grey;
+   	height: 20px;
+    width: 80px;
+    padding: 2px 2px;
+    margin-right: 0px;
+    background: white;
+    font-family: Cabin;
+    float:right;
+}
+
+
 .no-pixis {
 	font-family: "Homemade Apple";
 	font-size: 20px;
 	font-style: normal;
 	font-variant: normal;
 	font-weight: 500;
-	
 }
 
 
 label.myLabel input[type="file"] {
     position: fixed;
     top: -1000px;
+}
+
+
+.delete-image {
+	border: 1px solid grey;
+   	height: 20px;
+    width: 80px;
+    padding: 2px 2px;
+    margin-right: 0px;
+    background: white;
+    font-family: Cabin;
+    float:right;
+}
+
+.actions #login-button {
+	border: 1px solid red;
+	border-radius: 30px;
+    height: 30px;
+    width: 60px;
+    padding: 5px 5px;
+    margin-top: 10px;
+    background: white;
+    font-family: Cabin;
+    display: inline-block;;
+}
+
+#signup-button {
+	border: 1px solid red;
+	border-radius: 30px;
+    height: 30px;
+    width: 60px;
+    padding: 5px 5px;
+    margin-top: 10px;
+    background: white;
+    font-family: Cabin;
+    display: inline-block;;
+}
+
+.comment-submit {
+    background: transparent;
+    border: none;
+    font-size:0;
+}
+
+.comment-body {
+	width: 99%;
+}
+
+.comments-container {
+	font-family: "Droid Sans";
+	font-size: 10px;
+	font-style: normal;
+	font-variant: normal;
+	font-weight: 400;
+	line-height: 20px;
 }
 
 .myLabel {
@@ -117,7 +183,6 @@ label.myLabel input[type="file"] {
 	line-height: 13.2px;	
 }
 
-
 #image-upload-form {
 	font-family: Cabin;
 	float: right;	
@@ -125,10 +190,12 @@ label.myLabel input[type="file"] {
 }
 
 .login-form {
+  width: 200px;
   display: table;
   margin: 1em auto 0;
   padding: 1.25em 0.75em;
   border: 2px double;
+  margin-top: 200px;
 }
 .login-form label {
   display: block;
@@ -141,4 +208,23 @@ label.myLabel input[type="file"] {
 .login-form .actions {
   margin-top: 1em;
   text-align: center;
+}
+
+#username #password {
+	text-align: center;
+}
+
+a {
+	font-family: "Homemade Apple";
+	color: black;
+	margin-top: 10px;
+}
+
+.comments-container {
+	border: 1px solid grey;
+}
+
+.comments-container li {
+	font-style: italic;
+	list-style-type: circle;
 }
