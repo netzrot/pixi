@@ -109,9 +109,7 @@ app.post('/image-upload', upload.single('file-to-upload'), function(req, res, ne
 		var imageId = image.dataValues.id;
 		caption.imageId = imageId;
 		models.captions.create(caption).then(function(){
-
 			if(user_tags){
-
 				models.sequelize.transaction(function(t){
 		        	var userPromises = [];
 
@@ -125,7 +123,6 @@ app.post('/image-upload', upload.single('file-to-upload'), function(req, res, ne
 			        		tagPromises.push(models.user_tags.create({'userId': users[i].dataValues.id, 'imageId': imageId}, {transaction: t}))
 			        	}
 			        	return Promise.all(tagPromises).then(function(tags){
-
 							models.images.findById(image.id, {
 								include: [{model: models.captions}, {model: models.users}]
 							}).then(function(row){
@@ -152,7 +149,6 @@ app.post('/image-upload', upload.single('file-to-upload'), function(req, res, ne
 
 		})
 	});
-
 });
 
 app.get('/get-all', function(req, res){
