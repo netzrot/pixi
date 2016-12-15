@@ -35,7 +35,7 @@ module.exports = function(sequelize, DataTypes) {
         User.hasMany(models.comments);
         User.belongsToMany(models.images, {
           through: {
-            model: 'UserTags',
+            model: models.user_tags,
             unique: false
           }
         });

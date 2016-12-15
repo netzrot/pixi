@@ -15,6 +15,13 @@ var upload = multer({ dest: 'public/uploads/' });
 
 var port = process.env.PORT || 3000;
 
+models.sequelize.sync().then(function(){
+	app.listen(port, function(){
+		console.log(`ExpressJS started on port ${port}`);
+	});
+}).catch(function(err){
+	console.error(err);
+});
 
 app.get('/signup', function(req, res){
 	res.render('signup', {});
@@ -32,19 +39,11 @@ app.post('/signup', function(req, res){
 	res.redirect('/login');
 });
 
-app.use(session({
-  secret: 'password-protected site',
-  resave: false,
-  saveUninitialized: true
-}));
-
-models.sequelize.sync().then(function(){
-	app.listen(port, function(){
-		console.log(`ExpressJS started on port ${port}`);
-	});
-}).catch(function(err){
-	console.error(err);
-});
+// app.use(session({
+//   secret: 'password-protected site',
+//   resave: false,
+//   saveUninitialized: true
+// }));
 
 app.get('/login', function(req, res){
 	res.render('login', {});
@@ -75,22 +74,22 @@ app.get('/logout', function(req, res){
 	res.send("Logged out");
 });
 
-app.use(function(req, res, next) {
-  if (req.session.userId){
-    next();
-    return;
-  }
-  res.status(401).send("Please login to view this page.");
-});
+// app.use(function(req, res, next) {
+//   if (req.session.userId){
+//     next();
+//     return;
+//   }
+//   res.status(401).send("Please login to view this page.");
+// });
 
 app.get('/', function(req, res){
 	res.render('index', {});
 });
 
 app.post('/image-upload', upload.single('file-to-upload'), function(req, res, next){
-	var userId = req.session.userId;
+	var userId = 1//req.session.userId;
 	
-	var newImage = {
+	var image = {
 		'userId': userId,
 		'original_name': req.file.originalname,
 		'image_url': req.file.path
@@ -101,26 +100,58 @@ app.post('/image-upload', upload.single('file-to-upload'), function(req, res, ne
 		'body': req.body.caption
 	};
 
-	models.images.create(newImage).then(function(){
-		var image = this.dataValues;
-		caption.imageId = image.id;
+
+
+	var user_tags = req.body.tags.split(' ');
+
+
+	models.images.create(image).then(function(){
+		var imageId = this.dataValues.id;
+		caption.imageId = imageId;
 		models.captions.create(caption).then(function(){
-			models.images.findById(image.id, {
-				include: [{
-					model: models.captions
-				}]
-			}).then(function(row){
-				res.json({
-					pixi: row.dataValues,
-					currentUser: userId
+
+			for(var i in user_tags){
+ 				models.users.findOne({
+    				where: { username: user_tags[i] }
+  				}).then(function(user){
+					user_tag = {
+						'userId': user.id,
+						'imageId': imageId
+					}
+					models.user_tags.create(user_tag)
 				})
-			})
+			}
 		})
 	})
+
+
+
+
+
+
+
+
+
+	// models.images.create(newImage).then(function(){
+	// 	var image = this.dataValues;
+	// 	caption.imageId = image.id;
+	// 	models.captions.create(caption).then(function(){
+	// 		models.images.findById(image.id, {
+	// 			include: [{
+	// 				model: models.captions
+	// 			}]
+	// 		}).then(function(row){
+	// 			res.json({
+	// 				pixi: row.dataValues,
+	// 				currentUser: userId
+	// 			})
+	// 		})
+	// 	})
+	// })	
 });
 
 app.get('/get-all', function(req, res){
-	var userId = req.session.userId;
+	var userId = 1//req.session.userId;
 	models.images.findAll({
 	  include: [{
 	  		model: models.captions
