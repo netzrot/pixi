@@ -37,6 +37,14 @@ var buildPost = function(data, currentUser){
 	captionText.innerHTML = caption;
 	captionContainer.innerHTML = captionText.outerHTML;
 
+	if(data.users){
+		var userTagsContainer = document.createElement('div');
+		for(var i in data.users){
+			userTagsContainer.innerHTML += data.users[i].username;
+		}
+		imageContainer.innerHTML += userTagsContainer.outerHTML;
+	}
+
 	if(currentUser == data.userId){
 		var imageDelete = document.createElement('button');
 		imageDelete.setAttribute('class', 'delete-image');
