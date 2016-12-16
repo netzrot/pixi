@@ -59,6 +59,7 @@ app.post('/login', function(req, res){
 
     if(correctPW){
       req.session.userId = row.dataValues.id;
+      req.session.userName = row.dataValues.username;
       res.redirect('/')
     } else {
       console.error("Incorrect password");
@@ -89,16 +90,19 @@ app.get('/', function(req, res){
 
 app.post('/image-upload', upload.single('file-to-upload'), function(req, res, next){
 	var userId = req.session.userId;
+	var userName = req.session.userName;
 	
 	var image = {
 		'userId': userId,
 		'original_name': req.file.originalname,
-		'image_url': req.file.path
+		'image_url': req.file.path,
+		'created_by': userName
 	};
 
 	var caption = {
 		'userId': userId,
-		'body': req.body.caption
+		'body': req.body.caption,
+		'created_by': userName
 	};
 
 	if(req.body.tags != ''){
@@ -170,10 +174,12 @@ app.get('/get-all', function(req, res){
 
 app.post('/new-comment', function(req, res){
 	var userId = req.session.userId;
+	var userName = req.session.userName;
 	var comment = {
 		'userId': userId,
 		'imageId': req.body.imageId,
-		'body': req.body.body
+		'body': req.body.body,
+		'created_by': userName
 	};
 	models.comments.create(comment).then(function(){
 		res.json(this.dataValues);

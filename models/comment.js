@@ -2,6 +2,10 @@ module.exports = function(sequelize, DataTypes) {
   var Comment = sequelize.define("comments", {
     body: {
       type: DataTypes.STRING
+    },
+    created_by: {
+      type: DataTypes.STRING,
+      allowNull: false
     }
   }, {
     classMethods: {

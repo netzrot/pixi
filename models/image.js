@@ -8,6 +8,10 @@ module.exports = function(sequelize, DataTypes) {
     original_name: {
       type: DataTypes.STRING,
       allowNull: false
+    },
+    created_by: {
+      type: DataTypes.STRING,
+      allowNull: false
     }
   }, {
     classMethods: {

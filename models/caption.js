@@ -2,6 +2,10 @@ module.exports = function(sequelize, DataTypes) {
   var Caption = sequelize.define("captions", {
     body: {
       type: DataTypes.STRING
+    },
+    created_by: {
+      type: DataTypes.STRING,
+      allowNull: false
     }
   }, {
     classMethods: {
