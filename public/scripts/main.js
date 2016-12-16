@@ -152,7 +152,6 @@ $(document).on("click", ".edit-caption", function(){
 	editCaptionText.setAttribute('name', 'caption');
 	editCaptionSubmit.setAttribute('type', 'submit');
 	editCaptionSubmit.setAttribute('value', 'Submit');
-	editCaptionSubmit.setAttribute('class', 'edit-caption');
 	editCaptionForm.innerHTML = editCaptionId.outerHTML + editCaptionText.outerHTML + editCaptionSubmit.outerHTML;
 	$(this).prev().replaceWith(editCaptionForm);
 	$(this).remove();
@@ -166,9 +165,9 @@ $(document).on("submit", ".edit-caption-form", function(e){
       	data: $(this).serialize()
   	}).done(function(data){
   		var captionText = document.createElement('div');
-  		captionText.setAttribute('class', 'caption-text');
+		captionText.setAttribute('class', 'caption-text');
 		captionText.innerHTML = data.editedCaption;
-		
+
 		var editButton = document.createElement('button');
 		editButton.setAttribute('class', 'edit-caption')
 		editButton.innerHTML = "Edit";
