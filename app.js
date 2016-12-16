@@ -222,7 +222,7 @@ app.post('/edit-caption', function(req, res){
 	});
 });
 
-app.get('/user/:username', function(req, res){
+app.get('/:username', function(req, res){
 	if(req.params.username){
 
 		var userName = req.params.username;
