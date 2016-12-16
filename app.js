@@ -114,15 +114,16 @@ app.post('/image-upload', upload.single('file-to-upload'), function(req, res, ne
 		        	var userPromises = [];
 
 			       for (var i = 0; i < user_tags.length; i++) {
-			        	var newPromise = models.users.findOne({where: {username: user_tags[i]}}, {transaction: t});
-			        	userPromises.push(newPromise);
+			        	var userPromise = models.users.findOne({where: {username: user_tags[i]}}, {transaction: t});
+			        	userPromises.push(userPromise);
 			        };
 			        return Promise.all(userPromises).then(function(users){
 			        	var tagPromises = [];
 			        	for(var i = 0; i < users.length; i++){
-			        		tagPromises.push(models.user_tags.create({'userId': users[i].dataValues.id, 'imageId': imageId}, {transaction: t}))
+			        		var tagPromise = models.user_tags.create({'userId': users[i].dataValues.id, 'imageId': imageId}, {transaction: t});
+			        		tagPromises.push(tagPromise);
 			        	}
-			        	return Promise.all(tagPromises).then(function(tags){
+			        	return Promise.all(tagPromises).then(function(){
 							models.images.findById(image.id, {
 								include: [{model: models.captions}, {model: models.users}]
 							}).then(function(row){
