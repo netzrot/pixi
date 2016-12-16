@@ -14,10 +14,10 @@ module.exports = function(sequelize, DataTypes) {
       associate: function(models) {
         Image.hasOne(models.captions);
         Image.hasMany(models.comments);
-        Image.belongsTo(models.users, {
-          onDelete: "CASCADE",
-          foreignKey: {
-            allowNull: false
+        Image.belongsToMany(models.users, {
+          through: {
+            model: models.user_tags,
+            unique: false
           }
         });
       }

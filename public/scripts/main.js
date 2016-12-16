@@ -77,10 +77,11 @@ $('#image-upload-form').submit(function(e){
 	      	contentType: false,
 	      	processData: false
 	  	}).done(function(response){
+	  		console.log(response)
 			if($(".no-pixis")){
 				$(".no-pixis").remove();
 			};
-		    $("#posts-container").prepend(buildPost(response.pixi, response.currentUser));//NEED TO FIX THIS SO IT PASSES CURRENT USER TOO
+		    $("#posts-container").prepend(buildPost(response.pixi, response.currentUser));
 		    $(inputFields).val("");
 		}).fail(function(response){
 		    alert('Upload failed. Sorry! There seems to have been an error, please try again.');

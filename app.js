@@ -15,6 +15,20 @@ var upload = multer({ dest: 'public/uploads/' });
 
 var port = process.env.PORT || 3000;
 
+models.sequelize.sync().then(function(){
+	app.listen(port, function(){
+		console.log(`ExpressJS started on port ${port}`);
+	});
+}).catch(function(err){
+	console.error(err);
+});
+
+app.use(session({
+  secret: 'password-protected site',
+  resave: false,
+  saveUninitialized: true
+}));
+
 
 app.get('/signup', function(req, res){
 	res.render('signup', {});
@@ -30,20 +44,6 @@ app.post('/signup', function(req, res){
 	 	password: hashedPassword
 	 });
 	res.redirect('/login');
-});
-
-app.use(session({
-  secret: 'password-protected site',
-  resave: false,
-  saveUninitialized: true
-}));
-
-models.sequelize.sync().then(function(){
-	app.listen(port, function(){
-		console.log(`ExpressJS started on port ${port}`);
-	});
-}).catch(function(err){
-	console.error(err);
 });
 
 app.get('/login', function(req, res){
@@ -90,7 +90,7 @@ app.get('/', function(req, res){
 app.post('/image-upload', upload.single('file-to-upload'), function(req, res, next){
 	var userId = req.session.userId;
 	
-	var newImage = {
+	var image = {
 		'userId': userId,
 		'original_name': req.file.originalname,
 		'image_url': req.file.path
@@ -101,22 +101,54 @@ app.post('/image-upload', upload.single('file-to-upload'), function(req, res, ne
 		'body': req.body.caption
 	};
 
-	models.images.create(newImage).then(function(){
-		var image = this.dataValues;
-		caption.imageId = image.id;
+	if(req.body.tags != ''){
+		var user_tags = req.body.tags.split(' ');
+	};
+
+	models.images.create(image).then(function(image){
+		var imageId = image.dataValues.id;
+		caption.imageId = imageId;
 		models.captions.create(caption).then(function(){
-			models.images.findById(image.id, {
-				include: [{
-					model: models.captions
-				}]
-			}).then(function(row){
-				res.json({
-					pixi: row.dataValues,
-					currentUser: userId
+			if(user_tags){
+				models.sequelize.transaction(function(t){
+		        	var userPromises = [];
+
+			       for (var i = 0; i < user_tags.length; i++) {
+			        	var newPromise = models.users.findOne({where: {username: user_tags[i]}}, {transaction: t});
+			        	userPromises.push(newPromise);
+			        };
+			        return Promise.all(userPromises).then(function(users){
+			        	var tagPromises = [];
+			        	for(var i = 0; i < users.length; i++){
+			        		tagPromises.push(models.user_tags.create({'userId': users[i].dataValues.id, 'imageId': imageId}, {transaction: t}))
+			        	}
+			        	return Promise.all(tagPromises).then(function(tags){
+							models.images.findById(image.id, {
+								include: [{model: models.captions}, {model: models.users}]
+							}).then(function(row){
+								res.json({
+									pixi: row.dataValues,
+									currentUser: userId
+								})
+							})
+			        	})
+			        })
+
 				})
-			})
+			}
+			else{
+				models.images.findById(image.id, {
+					include: [{model: models.captions}]
+				}).then(function(row){
+					res.json({
+						pixi: row.dataValues,
+						currentUser: userId
+					})
+				})
+			}
+
 		})
-	})
+	});
 });
 
 app.get('/get-all', function(req, res){

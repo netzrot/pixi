@@ -25,9 +25,20 @@ module.exports = function(sequelize, DataTypes) {
   }, {
     classMethods: {
       associate: function(models) {
-        User.hasMany(models.images);
+        User.hasMany(models.images, {
+          onDelete: "CASCADE",
+          foreignKey: {
+            allowNull: false
+          }
+        });
         User.hasMany(models.captions);
         User.hasMany(models.comments);
+        User.belongsToMany(models.images, {
+          through: {
+            model: models.user_tags,
+            unique: false
+          }
+        });
       }
     }
   });
