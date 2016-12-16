@@ -117,6 +117,22 @@ var loadPosts = function(){
 	return postsContainer;
 };
 
+var userPosts = function(){
+	var postsContainer = document.createElement('ul');
+	postsContainer.setAttribute('id', 'posts-container');
+	$.get("/get-all", function(response){
+		if(response.pixis.length === 0){
+			postsContainer.innerHTML = "<p class='no-pixis'>Post your first Pixi!</p>";
+		}
+		else{
+			for(var i = (response.pixis.length - 1); i >= 0; i--){
+				postsContainer.innerHTML += buildPost(response.pixis[i], response.currentUser).outerHTML;
+			};
+		};
+	});
+	return postsContainer;
+};
+
 $(document).on("submit", ".comment-form", function(e){
 	var container = $(this).next();
 	var commentBodyInput = $(this).find(".comment-body");

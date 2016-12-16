@@ -221,3 +221,24 @@ app.post('/edit-caption', function(req, res){
 		};
 	});
 });
+
+app.get('/user/:username', function(req, res){
+	if(req.params.username){
+
+		var userName = req.params.username;
+
+		models.users.findOne({where: {username: userName}}).then(function(user){
+			models.images.findAll({where: {userId: user.id}, include: [{model: models.captions}, {model: models.comments}, {model: models.users}]}).then(function(rows){
+				pixis = [];
+				for(var i = 0; i < rows.length; i++){
+					rows[i].dataValues.createdAt = moment(rows[i].dataValues.createdAt).format("dddd, MMMM Do YYYY, h:mm:ss a");
+					pixis.push(rows[i].dataValues);
+				};
+				res.render('user', {
+					username: userName,
+					pixis: pixis
+				});
+			})
+		})
+	}
+})

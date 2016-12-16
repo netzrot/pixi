@@ -1,0 +1,14 @@
+<div>
+	Pixis by <%= username %>
+</div>
+
+<div class="content-container"></div>
+
+<script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
+<script src="/public/scripts/main.js"></script>
+<script>
+	var pixis = <%- JSON.stringify(pixis) %>;
+	for(var i = 0; i < pixis.length; i++){
+		$(".content-container").append(buildPost(pixis[i]));
+	}
+</script>
