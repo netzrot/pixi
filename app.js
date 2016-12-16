@@ -155,12 +155,7 @@ app.post('/image-upload', upload.single('file-to-upload'), function(req, res, ne
 app.get('/get-all', function(req, res){
 	var userId = req.session.userId;
 	models.images.findAll({
-	  include: [{
-	  		model: models.captions
-	  	},
-	  	{
-	  		model: models.comments
-	  }]
+	  include: [{model: models.captions}, {model: models.comments}, {model: models.users}]
 	}).then(function(rows){
 		pixis = [];
 		for(var i = 0; i < rows.length; i++){
