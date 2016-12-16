@@ -7,6 +7,7 @@ app.set('view engine', 'ejs');
 app.use('/public', express.static(__dirname + "/public"));
 var session = require('express-session');
 var passwordHash = require('password-hash');
+var moment = require('moment');
 
 var models = require('./models');
 
@@ -85,7 +86,8 @@ app.use(function(req, res, next) {
 });
 
 app.get('/', function(req, res){
-	res.render('index', {});
+	var userName = req.session.userName;
+	res.render('index', {currentUser: userName});
 });
 
 app.post('/image-upload', upload.single('file-to-upload'), function(req, res, next){
@@ -131,6 +133,7 @@ app.post('/image-upload', upload.single('file-to-upload'), function(req, res, ne
 							models.images.findById(image.id, {
 								include: [{model: models.captions}, {model: models.users}]
 							}).then(function(row){
+								row.dataValues.createdAt = moment(row.dataValues.createdAt).format("dddd, MMMM Do YYYY, h:mm:ss a");
 								res.json({
 									pixi: row.dataValues,
 									currentUser: userId
@@ -145,6 +148,7 @@ app.post('/image-upload', upload.single('file-to-upload'), function(req, res, ne
 				models.images.findById(image.id, {
 					include: [{model: models.captions}]
 				}).then(function(row){
+					row.dataValues.createdAt = moment(row.dataValues.createdAt).format("dddd, MMMM Do YYYY, h:mm:ss a");
 					res.json({
 						pixi: row.dataValues,
 						currentUser: userId
@@ -163,6 +167,7 @@ app.get('/get-all', function(req, res){
 	}).then(function(rows){
 		pixis = [];
 		for(var i = 0; i < rows.length; i++){
+			rows[i].dataValues.createdAt = moment(rows[i].dataValues.createdAt).format("dddd, MMMM Do YYYY, h:mm:ss a");
 			pixis.push(rows[i].dataValues);
 		};
 		res.json({

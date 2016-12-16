@@ -29,12 +29,14 @@
 
 
 <div id="body">
+<div id="welcome">
+	Welcome, <%= currentUser %>!
+</div>
 
 <div class="content-container"></div>
 
 <script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
 <script src="/public/scripts/main.js"></script>
-
 <script>
 	$(".content-container").append(loadPosts());
 </script>

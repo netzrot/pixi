@@ -2,6 +2,7 @@ var buildPost = function(data, currentUser){
 	console.log(data)
 	var post = document.createElement('li');
 	var imageContainer = document.createElement('div');
+	var creatorContainer = document.createElement('div');
 	var captionContainer = document.createElement('div');
 	var captionText = document.createElement('div');
 	var imageElement = document.createElement('img');
@@ -15,10 +16,11 @@ var buildPost = function(data, currentUser){
 	var imageId = data.id;
 	var commentsArray = data.comments;
 	for (var i in commentsArray) {
-		$(commentsList).append("<li>"+commentsArray[i].body+"</li>");
+		$(commentsList).append("<li>" + commentsArray[i].body + " - <span>" + commentsArray[i].created_by + "</span></li>");
 	};
 	post.setAttribute('class', 'post-container');
 	imageContainer.setAttribute('class', 'image-container');
+	creatorContainer.setAttribute('class', 'creator-container');
 	captionContainer.setAttribute('class', 'caption-container');
 	captionContainer.setAttribute('data-captionid', data.caption.id);
 	captionText.setAttribute('class', 'caption-text');
@@ -34,7 +36,8 @@ var buildPost = function(data, currentUser){
 	commentSubmit.setAttribute('value', 'Submit');
 	commentSubmit.setAttribute('class', 'comment-submit');
 	commentsList.setAttribute('class', 'comments-container');
-	imageContainer.innerHTML = imageElement.outerHTML;
+	creatorContainer.innerHTML = "Posted by " + data.created_by + " on " + data.createdAt;
+	imageContainer.innerHTML = creatorContainer.outerHTML + imageElement.outerHTML;
 	captionText.innerHTML = caption;
 	captionContainer.innerHTML = captionText.outerHTML;
 
@@ -123,7 +126,7 @@ $(document).on("submit", ".comment-form", function(e){
       	data: $(this).serialize()
   	}).done(function(data){
   		$(commentBodyInput).val("");
-  		$(container).prepend("<li>" + data.body + "</li>");
+  		$(container).prepend("<li>" + data.body + " - <span>" + data.created_by + "</span></li>");
 	}).fail(function(data){
 	    alert('Comment failed. Sorry! There seems to have been an error, please try again.');
 	});
