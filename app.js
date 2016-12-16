@@ -195,7 +195,7 @@ app.delete('/delete-image', function(req, res) {
 	});
 });
 
-app.patch('/edit-caption', function(req, res){
+app.post('/edit-caption', function(req, res){
 	var captionId = req.body.captionId;
 	models.captions.findById(captionId).then(function(row){
 		if (row.dataValues.userId == req.session.userId){

@@ -160,7 +160,7 @@ $(document).on("click", ".edit-caption", function(){
 $(document).on("submit", ".edit-caption-form", function(e){
 	var editCaptionForm = this;
 	$.ajax({
-      	type:'PATCH',
+      	type:'POST',
       	url:'/edit-caption',
       	data: $(this).serialize()
   	}).done(function(data){
