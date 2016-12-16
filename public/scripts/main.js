@@ -85,7 +85,6 @@ $('#image-upload-form').submit(function(e){
 	      	contentType: false,
 	      	processData: false
 	  	}).done(function(response){
-	  		console.log(response)
 			if($(".no-pixis")){
 				$(".no-pixis").remove();
 			};
