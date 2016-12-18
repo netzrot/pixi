@@ -1,5 +1,4 @@
 var buildPost = function(data, currentUser){
-	console.log(data)
 	var post = document.createElement('li');
 	var imageContainer = document.createElement('div');
 	var creatorContainer = document.createElement('div');
@@ -36,7 +35,7 @@ var buildPost = function(data, currentUser){
 	commentSubmit.setAttribute('value', 'Submit');
 	commentSubmit.setAttribute('class', 'comment-submit');
 	commentsList.setAttribute('class', 'comments-container');
-	creatorContainer.innerHTML = "Posted by " + data.created_by + " on " + data.createdAt;
+	creatorContainer.innerHTML = "Posted by <a href=/" + data.created_by + ">" + data.created_by + "</a> on " + data.createdAt;
 	imageContainer.innerHTML = creatorContainer.outerHTML + imageElement.outerHTML;
 	captionText.innerHTML = caption;
 	captionContainer.innerHTML = captionText.outerHTML;
@@ -44,7 +43,7 @@ var buildPost = function(data, currentUser){
 	if(data.users){
 		var userTagsContainer = document.createElement('div');
 		for(var i in data.users){
-			userTagsContainer.innerHTML += data.users[i].username;
+			userTagsContainer.innerHTML += '<a href=/'+ data.users[i].username +'>' + data.users[i].username + '</a>';
 		}
 		imageContainer.innerHTML += userTagsContainer.outerHTML;
 	}

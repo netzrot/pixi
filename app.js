@@ -25,7 +25,7 @@ models.sequelize.sync().then(function(){
 });
 
 app.use(session({
-  secret: 'password-protected site',
+  secret: process.env.SECRET || 'password-protected site',
   resave: false,
   saveUninitialized: true
 }));
