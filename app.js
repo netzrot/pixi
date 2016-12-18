@@ -24,6 +24,10 @@ models.sequelize.sync().then(function(){
 	console.error(err);
 });
 
+app.get('/', function(req, res){
+	res.redirect('/login');
+})
+
 app.use(session({
   secret: process.env.SECRET || 'password-protected site',
   resave: false,
