@@ -216,7 +216,7 @@ label.myLabel input[type="file"] {
 
 a {
 	font-family: "Homemade Apple";
-	color: black;
+	color: red;
 	margin-top: 10px;
 }
 
@@ -227,4 +227,14 @@ a {
 .comments-container li {
 	font-style: italic;
 	list-style-type: circle;
+}
+
+#logout {
+	margin-right: 20px;
+}
+
+p {
+	margin-top: 200px;
+	text-align: center;
+	font-family: "Homemade Apple";
 }

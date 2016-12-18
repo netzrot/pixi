@@ -80,7 +80,7 @@ app.post('/login', function(req, res){
 
 app.get('/logout', function(req, res){
 	req.session.userId = null;
-	res.send("Logged out");
+	res.render('logout', {});
 });
 
 app.use(function(req, res, next) {
