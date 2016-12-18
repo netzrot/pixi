@@ -15,7 +15,7 @@ var buildPost = function(data, currentUser){
 	var imageId = data.id;
 	var commentsArray = data.comments;
 	for (var i in commentsArray) {
-		$(commentsList).append("<li>" + commentsArray[i].body + " - <span>" + commentsArray[i].created_by + "</span></li>");
+		$(commentsList).append("<li>" + commentsArray[i].body + " - <a href=/" + commentsArray[i].created_by + ">" + commentsArray[i].created_by + "</a></li>");
 	};
 	post.setAttribute('class', 'post-container');
 	imageContainer.setAttribute('class', 'image-container');
@@ -179,6 +179,7 @@ $(document).on("click", ".edit-caption", function(){
 	editCaptionText.setAttribute('type', 'text');
 	editCaptionText.setAttribute('value', originalCaption);
 	editCaptionText.setAttribute('name', 'caption');
+	editCaptionText.setAttribute('maxlength', '150');
 	editCaptionSubmit.setAttribute('type', 'submit');
 	editCaptionSubmit.setAttribute('value', 'Submit');
 	editCaptionForm.innerHTML = editCaptionId.outerHTML + editCaptionText.outerHTML + editCaptionSubmit.outerHTML;
