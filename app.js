@@ -45,8 +45,12 @@ app.post('/signup', function(req, res){
 		email: req.body.email,
 	 	username: req.body.username,
 	 	password: hashedPassword
-	 });
-	res.redirect('/login');
+	 })
+	.then(function(newUser) {
+		req.session.userId = newUser.dataValues.id;
+		req.session.userName = newUser.dataValues.username;
+		res.redirect('/');
+	})	
 });
 
 app.get('/login', function(req, res){
