@@ -31,6 +31,7 @@ var buildPost = function(data, currentUser){
 	commentBody.setAttribute('type', 'text');
 	commentBody.setAttribute('name', 'body');
 	commentBody.setAttribute('class', 'comment-body');
+	commentBody.setAttribute('placeholder', 'Add a comment...');
 	commentSubmit.setAttribute('type', 'submit');
 	commentSubmit.setAttribute('value', 'Submit');
 	commentSubmit.setAttribute('class', 'comment-submit');
@@ -42,8 +43,10 @@ var buildPost = function(data, currentUser){
 
 	if(data.users){
 		var userTagsContainer = document.createElement('div');
+		userTagsContainer.setAttribute('class', 'user-tags-container');
+		userTagsContainer.innerHTML = "Tagged users: "
 		for(var i in data.users){
-			userTagsContainer.innerHTML += '<a href=/'+ data.users[i].username +'>' + data.users[i].username + '</a>';
+			userTagsContainer.innerHTML += '<a class="user-tag" href=/'+ data.users[i].username +'>' + data.users[i].username + '</a>';
 		}
 		imageContainer.innerHTML += userTagsContainer.outerHTML;
 	}

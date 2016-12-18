@@ -238,3 +238,7 @@ p {
 	text-align: center;
 	font-family: "Homemade Apple";
 }
+
+.user-tag{
+	margin: 0 5px;
+}
