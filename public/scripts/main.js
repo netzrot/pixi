@@ -23,7 +23,7 @@ var buildPost = function(data, currentUser){
 	captionContainer.setAttribute('class', 'caption-container');
 	captionContainer.setAttribute('data-captionid', data.caption.id);
 	captionText.setAttribute('class', 'caption-text');
-	imageElement.setAttribute('src', imagePath);
+	imageElement.setAttribute('src', '/' + imagePath);
 	commentForm.setAttribute('class', 'comment-form');
 	imageIdField.setAttribute('type', 'hidden');
 	imageIdField.setAttribute('name', 'imageId');
