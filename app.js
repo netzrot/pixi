@@ -84,7 +84,8 @@ app.use(function(req, res, next) {
     next();
     return;
   }
-  res.status(401).send("Please login to view this page.");
+  	res.redirect('/login');
+	
 });
 
 app.get('/', function(req, res){
