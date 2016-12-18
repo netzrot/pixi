@@ -97,7 +97,7 @@ app.get('/', function(req, res){
 	res.render('index', {currentUser: userName});
 });
 
-app.post('/image-upload', upload.single('file-to-upload'), function(req, res, next){
+app.post('/image-upload', upload.single('image'), function(req, res, next){
 	var userId = req.session.userId;
 	var userName = req.session.userName;
 	

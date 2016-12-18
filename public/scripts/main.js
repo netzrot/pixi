@@ -68,7 +68,7 @@ var buildPost = function(data, currentUser){
 
 $('#image-upload-form').submit(function(e){
 	var inputFields = $(".input-field");
-	var imageField = $("#file-to-upload");
+	var imageField = $("#image");
 	var captionField = $("#caption");
 	var formData = new FormData($(this)[0]);
 	var proceed = true;
