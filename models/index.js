@@ -3,6 +3,8 @@ var path = require("path");
 var Sequelize = require("sequelize");
 var databaseURL = process.env.DATABASE_URL || "sqlite://pixis.sqlite";
 var sequelize = new Sequelize(databaseURL);
+var validator = require('validator');
+require('sequelize-isunique-validator')(Sequelize);
 
 var db = {};
 

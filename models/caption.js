@@ -1,7 +1,10 @@
 module.exports = function(sequelize, DataTypes) {
   var Caption = sequelize.define("captions", {
     body: {
-      type: DataTypes.STRING
+      type: DataTypes.STRING,
+      validate: {
+        len: [0, 150]
+      }
     },
     created_by: {
       type: DataTypes.STRING,

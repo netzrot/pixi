@@ -11,12 +11,19 @@ module.exports = function(sequelize, DataTypes) {
     email: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: true
+      unique: true,
+      validate: {
+        isEmail: true,
+        isUnique: sequelize.validateIsUnique('email', 'That email is being used. Please choose a different email address.')
+      }
     },
     username: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: true
+      unique: true,
+      validate: {
+        isUnique: sequelize.validateIsUnique('username', 'That username is taken. Please choose a different username.')
+      }
     },
     password: {
       type: DataTypes.STRING,
